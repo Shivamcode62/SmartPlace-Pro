@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartPlace Pro - Placement Preparation Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#00d4ff',
+                        secondary: '#7e22ce',
+                        dark: '#0f172a',
+                        darker: '#0a0f1c'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #7e22ce 0%, #00d4ff 50%, #3b82f6 100%);
+            background-size: 200% 200%;
+            animation: gradient 8s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .glow {
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+    <!-- Navigation -->
+    <nav class="bg-gray-900/80 backdrop-blur-md fixed w-full z-50 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold gradient-text bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                            <i class="fas fa-brain mr-2"></i>SmartPlace Pro
+                        </h1>
+                    </div>
+                    <div class="hidden md:ml-10 md:flex space-x-4">
+                        <a href="#features" class="px-3 py-2 rounded-md text-sm font-medium hover:text-primary">Features</a>
+                        <a href="#tests" class="px-3 py-2 rounded-md text-sm font-medium hover:text-primary">Practice</a>
+                        <a href="#interview" class="px-3 py-2 rounded-md text-sm font-medium hover:text-primary">Interview</a>
+                        <a href="#resume" class="px-3 py-2 rounded-md text-sm font-medium hover:text-primary">Resume AI</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button class="bg-primary text-dark px-6 py-2 rounded-lg font-semibold hover:bg-opacity-90">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <h1 class="text-5xl md:text-6xl font-bold leading-tight">
+                        Master Your <span class="gradient-text bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Dream Job</span> Placement
+                    </h1>
+                    <p class="text-xl text-gray-300 leading-relaxed">
+                        AI-powered platform with smart aptitude tests, coding challenges, HR interview prep, and resume analysis to help you land your perfect tech job.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button class="bg-primary text-dark px-8 py-4 rounded-xl font-semibold text-lg hover:scale-105 transform">
+                            Start Free Trial
+                        </button>
+                        <button class="border border-primary text-primary px-8 py-4 rounded-xl font-semibold text-lg hover:bg-primary hover:text-dark">
+                            View Demo
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-6 pt-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-white"></i>
+                            </div>
+                            <span class="ml-3 font-semibold">5000+ Success Stories</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-star text-white"></i>
+                            </div>
+                            <span class="ml-3 font-semibold">4.9/5 Rating</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="relative z-10">
+                        <img src="https://placehold.co/600x400" alt="Modern dashboard interface showing placement preparation analytics with charts and progress metrics" class="rounded-2xl shadow-2xl w-full" />
+                    </div>
+                    <div class="absolute -top-6 -right-6 w-32 h-32 bg-primary rounded-full opacity-20 floating"></div>
+                    <div class="absolute -bottom-6 -left-6 w-24 h-24 bg-secondary rounded-full opacity-20 floating" style="animation-delay: 2s;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-darker px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Smart Features for <span class="text-primary">Success</span></h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    Advanced tools powered by AI to give you the competitive edge in placement preparation
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-gray-800 p-6 rounded-2xl border border-gray-700 hover:border-primary">
+                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-brain text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Adaptive Aptitude Tests</h3>
+                    <p class="text-gray-400">AI-powered adaptive testing that adjusts difficulty based on your performance</p>
+                    <ul class="mt-4 space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-2"></i> Quantitative Aptitude</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-2"></i> Logical Reasoning</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-2"></i> Verbal Ability</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card bg-gray-800 p-6 rounded-2xl border border-gray-700 hover:border-primary">
+                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-code text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Coding Challenges</h3>
+                    <p class="text-gray-400">Course-specific coding problems with real-time evaluation</p>
+                    <ul class="mt-4 space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-2"></i> DSA Problems</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-2"></i> Web Development</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-2"></i> Machine Learning</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card bg-gray-800 p-6 rounded-2xl border border-gray-700 hover:border-primary">
+                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-comments text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">HR Interview Prep</h3>
+                    <p class="text-gray-400">Mock interviews with AI-powered feedback and analysis</p>
+                    <ul class="mt-4 space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-2"></i> Behavioral Questions</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-2"></i> Technical Questions</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-2"></i> Personality Analysis</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card bg-gray-800 p-6 rounded-2xl border border-gray-700 hover:border-primary">
+                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-file-alt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">AI Resume Analyzer</h3>
+                    <p class="text-gray-400">Smart resume analysis with ATS optimization and scoring</p>
+                    <ul class="mt-4 space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-2"></i> ATS Compatibility</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-2"></i> Skills Gap Analysis</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-2"></i> Optimization Tips</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Aptitude Tests Section -->
+    <section id="tests" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold mb-6">Smart <span class="text-primary">Aptitude Practice</span></h2>
+                    <p class="text-xl text-gray-400 mb-8">
+                        Adaptive tests that learn your strengths and weaknesses to provide personalized practice sessions.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-800 p-6 rounded-2xl">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="font-semibold">Quantitative Aptitude</h4>
+                                <div class="w-20 h-2 bg-gray-700 rounded-full">
+                                    <div class="w-3/4 h-full bg-primary rounded-full"></div>
+                                </div>
+                            </div>
+                            <p class="text-gray-400">Progress: 75% • 150/200 questions</p>
+                        </div>
+
+                        <div class="bg-gray-800 p-6 rounded-2xl">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="font-semibold">Logical Reasoning</h4>
+                                <div class="w-20 h-2 bg-gray-700 rounded-full">
+                                    <div class="w-1/2 h-full bg-primary rounded-full"></div>
+                                </div>
+                            </div>
+                            <p class="text-gray-400">Progress: 50% • 100/200 questions</p>
+                        </div>
+
+                        <div class="bg-gray-800 p-6 rounded-2xl">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="font-semibold">Verbal Ability</h4>
+                                <div class="w-20 h-2 bg-gray-700 rounded-full">
+                                    <div class="w-2/5 h-full bg-primary rounded-full"></div>
+                                </div>
+                            </div>
+                            <p class="text-gray-400">Progress: 40% • 80/200 questions</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <img src="https://placehold.co/600x400" alt="Interactive test interface with questions, timer, and progress indicators in dark theme" class="rounded-2xl shadow-xl w-full" />
+                    <div class="absolute -bottom-4 -right-4 bg-primary text-dark px-6 py-3 rounded-xl font-semibold">
+                        Live Progress Tracking
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coding Challenges Section -->
+    <section class="py-20 bg-darker px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Course-Specific <span class="text-primary">Coding Challenges</span></h2>
+                <p class="text-xl text-gray-400">Practice coding problems tailored to your academic curriculum</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- CS/IT -->
+                <div class="bg-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-primary">
+                    <div class="w-20 h-20 gradient-bg rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-laptop-code text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-center mb-4">Computer Science</h3>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex justify-between"><span>Data Structures</span> <span class="text-primary">120 Problems</span></li>
+                        <li class="flex justify-between"><span>Algorithms</span> <span class="text-primary">80 Problems</span></li>
+                        <li class="flex justify-between"><span>DBMS</span> <span class="text-primary">60 Problems</span></li>
+                        <li class="flex justify-between"><span>OS</span> <span class="text-primary">50 Problems</span></li>
+                    </ul>
+                    <button class="w-full mt-6 bg-primary text-dark py-3 rounded-lg font-semibold hover:bg-opacity-90">
+                        Start Practicing
+                    </button>
+                </div>
+
+                <!-- Web Development -->
+                <div class="bg-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-primary">
+                    <div class="w-20 h-20 gradient-bg rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-globe text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-center mb-4">Web Development</h3>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex justify-between"><span>Frontend</span> <span class="text-primary">90 Problems</span></li>
+                        <li class="flex justify-between"><span>Backend</span> <span class="text-primary">70 Problems</span></li>
+                        <li class="flex justify-between"><span>Full Stack</span> <span class="text-primary">50 Problems</span></li>
+                        <li class="flex justify-between"><span>APIs</span> <span class="text-primary">40 Problems</span></li>
+                    </ul>
+                    <button class="w-full mt-6 bg-primary text-dark py-3 rounded-lg font-semibold hover:bg-opacity-90">
+                        Start Practicing
+                    </button>
+                </div>
+
+                <!-- Data Science -->
+                <div class="bg-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-primary">
+                    <div class="w-20 h-20 gradient-bg rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-chart-line text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-center mb-4">Data Science</h3>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex justify-between"><span>ML Algorithms</span> <span class="text-primary">60 Problems</span></li>
+                        <li class="flex justify-between"><span>Data Analysis</span> <span class="text-primary">45 Problems</span></li>
+                        <li class="flex justify-between"><span>Statistics</span> <span class="text-primary">35 Problems</span></li>
+                        <li class="flex justify-between"><span>Visualization</span> <span class="text-primary">25 Problems</span></li>
+                    </ul>
+                    <button class="w-full mt-6 bg-primary text-dark py-3 rounded-lg font-semibold hover:bg-opacity-90">
+                        Start Practicing
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HR Interview Section -->
+    <section id="interview" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <img src="https://placehold.co/600x400" alt="Mock interview simulation interface with AI avatar and real-time feedback indicators" class="rounded-2xl shadow-xl w-full" />
+                    <div class="absolute -top-4 -left-4 bg-secondary text-white px-6 py-3 rounded-xl font-semibold">
+                        AI Interviewer
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-4xl font-bold mb-6">AI-Powered <span class="text-primary">HR Interview Prep</span></h2>
+                    <p class="text-xl text-gray-400 mb-8">
+                        Practice interviews with intelligent feedback on your communication, content, and confidence.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-primary bg-opacity-20 rounded-xl flex items-center justify-center mr-4">
+                                <i class="fas fa-microphone text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-2">Speech Analysis</h4>
+                                <p class="text-gray-400">Real-time analysis of speech patterns, pace, and clarity</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-primary bg-opacity-20 rounded-xl flex items-center justify-center mr-4">
+                                <i class="fas fa-comment-dots text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-2">Content Evaluation</h4>
+                                <p class="text-gray-400">AI evaluation of answer relevance and depth</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-primary bg-opacity-20 rounded-xl flex items-center justify-center mr-4">
+                                <i class="fas fa-chart-line text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-2">Progress Tracking</h4>
+                                <p class="text-gray-400">Track improvements across multiple mock interviews</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="mt-8 bg-primary text-dark px-8 py-4 rounded-xl font-semibold text-lg hover:scale-105 transform">
+                        Schedule Mock Interview
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resume Analyzer Section -->
+    <section id="resume" class="py-20 bg-darker px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">AI <span class="text-primary">Resume Analyzer</span></h2>
+                <p class="text-xl text-gray-400">Get your resume optimized for ATS and human readers with smart analysis</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-800 p-8 rounded-2xl text-center">
+                    <div class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-robot text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">ATS Optimization</h3>
+                    <p class="text-gray-400">Ensure your resume passes through Applicant Tracking Systems with optimal keyword placement and format</p>
+                    <div class="mt-6 bg-gray-900 rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span>ATS Score</span>
+                            <span class="text-primary font-semibold">92%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-primary h-2 rounded-full" style="width: 92%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 p-8 rounded-2xl text-center">
+                    <div class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-lightbulb text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Skills Analysis</h3>
+                    <p class="text-gray-400">Identify skill gaps and get recommendations for improvement based on your target roles</p>
+                    <div class="mt-6 bg-gray-900 rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span>Skills Match</span>
+                            <span class="text-primary font-semibold">78%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-primary h-2 rounded-full" style="width: 78%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 p-8 rounded-2xl text-center">
+                    <div class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-magic text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Smart Suggestions</h3>
+                    <p class="text-gray-400">Get AI-powered suggestions for improving content, formatting, and impact</p>
+                    <div class="mt-6 bg-gray-900 rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span>Overall Score</span>
+                            <span class="text-primary font-semibold">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-primary h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <button class="bg-primary text-dark px-8 py-4 rounded-xl font-semibold text-lg hover:scale-105 transform">
+                    Analyze Your Resume Now
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Features -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Advanced <span class="text-primary">Features</span></h2>
+                <p class="text-xl text-gray-400">Cutting-edge tools to supercharge your preparation</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-800 p-6 rounded-2xl">
+                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-4">
+                        <i class="fas fa-bullseye text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Personalized Roadmaps</h3>
+                    <p class="text-gray-400">AI-generated study plans based on your goals and current skill level</p>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-2xl">
+                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-4">
+                        <i class="fas fa-users text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Peer Comparison</h3>
+                    <p class="text-gray-400">Compare your progress with peers and industry benchmarks</p>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-2xl">
+                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-4">
+                        <i class="fas fa-trophy text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Achievement System</h3>
+                    <p class="text-gray-400">Gamified learning with badges and rewards for milestones</p>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-2xl">
+                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-4">
+                        <i class="fas fa-calendar-alt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Smart Scheduling</h3>
+                    <p class="text-gray-400">Intelligent study scheduling based on your availability and goals</p>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-2xl">
+                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-pie text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Analytics Dashboard</h3>
+                    <p class="text-gray-400">Comprehensive performance analytics with detailed insights</p>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-2xl">
+                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-4">
+                        <i class="fas fa-mobile-alt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Mobile Practice</h3>
+                    <p class="text-gray-400">Practice on-the-go with our mobile-optimized platform</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 gradient-bg">
+        <div class="max-w-4xl mx-auto text-center px-4">
+            <h2 class="text-4xl font-bold mb-6">Ready to Ace Your Next Placement?</h2>
+            <p class="text-xl mb-8">Join thousands of students who have landed their dream jobs with SmartPlace Pro</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-white text-dark px-8 py-4 rounded-xl font-semibold text-lg hover:scale-105 transform">
+                    Start Free Trial
+                </button>
+                <button class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-white hover:text-dark">
+                    Schedule Demo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold gradient-text bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
+                        SmartPlace Pro
+                    </h3>
+                    <p class="text-gray-400 mb-4">Your intelligent companion for placement preparation success</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Features</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-primary">Aptitude Tests</a></li>
+                        <li><a href="#" class="hover:text-primary">Coding Challenges</a></li>
+                        <li><a href="#" class="hover:text-primary">Interview Prep</a></li>
+                        <li><a href="#" class="hover:text-primary">Resume Analyzer</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-primary">Blog</a></li>
+                        <li><a href="#" class="hover:text-primary">Tutorials</a></li>
+                        <li><a href="#" class="hover:text-primary">Webinars</a></li>
+                        <li><a href="#" class="hover:text-primary">Success Stories</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>support@smartplacepro.com</li>
+                        <li>+1 (555) 123-4567</li>
+                        <li>123 Tech Street, Silicon Valley</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 SmartPlace Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Simple animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.feature-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
+
