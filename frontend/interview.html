@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Interview Prep - SmartPlace Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .animated-bg span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            bottom: -50px;
+            animation: animate 25s linear infinite;
+        }
+        
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 28px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo span {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: #667eea;
+        }
+        
+        .nav-link.active {
+            color: #667eea;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #4a5568;
+        }
+        
+        /* Buttons */
+        .btn-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .btn-outline-gradient {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .btn-outline-gradient:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+        
+        /* Interview Card */
+        .interview-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .interview-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* AI Avatar */
+        .ai-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .ai-avatar i {
+            font-size: 48px;
+            color: white;
+        }
+        
+        /* Recording Animation */
+        .recording-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            animation: recordingPulse 1.5s infinite;
+        }
+        
+        @keyframes recordingPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
+        /* Feedback Card */
+        .feedback-card {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border-left: 4px solid #f59e0b;
+        }
+        
+        /* Tips List */
+        .tips-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 1500;
+            animation: slideInRight 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Question Area */
+        .question-area {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 24px;
+            min-height: 180px;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 60px 20px 30px;
+            margin-top: 60px;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 40px;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .interview-card {
+                padding: 20px;
+            }
+            
+            .question-area {
+                padding: 16px;
+            }
+        }
+        
+        .grid {
+            display: grid;
+            gap: 32px;
+        }
+        
+        .lg\:grid-cols-2 {
+            grid-template-columns: 1fr;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .flex {
+            display: flex;
+        }
+        
+        .flex-1 {
+            flex: 1;
+        }
+        
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+        
+        .items-center {
+            align-items: center;
+        }
+        
+        .justify-between {
+            justify-content: space-between;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .mb-12 {
+            margin-bottom: 48px;
+        }
+        
+        .mb-6 {
+            margin-bottom: 24px;
+        }
+        
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+        
+        .mb-3 {
+            margin-bottom: 12px;
+        }
+        
+        .mb-2 {
+            margin-bottom: 8px;
+        }
+        
+        .mt-4 {
+            margin-top: 16px;
+        }
+        
+        .mt-6 {
+            margin-top: 24px;
+        }
+        
+        .mt-1 {
+            margin-top: 4px;
+        }
+        
+        .mr-2 {
+            margin-right: 8px;
+        }
+        
+        .mr-3 {
+            margin-right: 12px;
+        }
+        
+        .gap-4 {
+            gap: 16px;
+        }
+        
+        .gap-3 {
+            gap: 12px;
+        }
+        
+        .w-full {
+            width: 100%;
+        }
+        
+        .text-5xl {
+            font-size: 48px;
+        }
+        
+        .text-xl {
+            font-size: 20px;
+        }
+        
+        .text-2xl {
+            font-size: 24px;
+        }
+        
+        .text-lg {
+            font-size: 18px;
+        }
+        
+        .text-sm {
+            font-size: 14px;
+        }
+        
+        .font-bold {
+            font-weight: 700;
+        }
+        
+        .font-semibold {
+            font-weight: 600;
+        }
+        
+        .text-white {
+            color: white;
+        }
+        
+        .text-gray-800 {
+            color: #1f2937;
+        }
+        
+        .text-gray-700 {
+            color: #374151;
+        }
+        
+        .text-gray-600 {
+            color: #4b5563;
+        }
+        
+        .text-gray-500 {
+            color: #6b7280;
+        }
+        
+        .text-indigo-600 {
+            color: #4f46e5;
+        }
+        
+        .text-green-600 {
+            color: #10b981;
+        }
+        
+        .text-orange-600 {
+            color: #ea580c;
+        }
+        
+        .text-red-500 {
+            color: #ef4444;
+        }
+        
+        .text-yellow-500 {
+            color: #f59e0b;
+        }
+        
+        .bg-gray-100 {
+            background-color: #f3f4f6;
+        }
+        
+        .bg-gray-200 {
+            background-color: #e5e7eb;
+        }
+        
+        .bg-red-500 {
+            background-color: #ef4444;
+        }
+        
+        .rounded-2xl {
+            border-radius: 16px;
+        }
+        
+        .rounded-full {
+            border-radius: 9999px;
+        }
+        
+        .h-2 {
+            height: 8px;
+        }
+        
+        .space-y-3 > * + * {
+            margin-top: 12px;
+        }
+        
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .pt-32 {
+            padding-top: 120px;
+        }
+        
+        .pb-20 {
+            padding-bottom: 80px;
+        }
+        
+        .px-4 {
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+        
+        .max-w-7xl {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .inline-flex {
+            display: inline-flex;
+        }
+        
+        .bg-gradient-to-r {
+            background-image: linear-gradient(to right, #4f46e5, #7c3aed);
+        }
+        
+        .from-indigo-500 {
+            --tw-gradient-from: #4f46e5;
+        }
+        
+        .to-purple-600 {
+            --tw-gradient-to: #7c3aed;
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg" id="animatedBg"></div>
+    
+    <!-- Navigation - Same as index -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>SmartPlace Pro</span>
+            </div>
+            
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="aptitude.html" class="nav-link">Aptitude</a>
+                <a href="coding.html" class="nav-link">Coding</a>
+                <a href="interview.html" class="nav-link active">Interview</a>
+                <a href="resume.html" class="nav-link">Resume AI</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="profile.html" class="nav-link">Profile</a>
+            </div>
+            
+            <div class="mobile-menu" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileNav" style="display: none; background: white; padding: 20px; flex-direction: column; gap: 15px;">
+            <a href="index.html" class="nav-link" onclick="closeMobileMenu()">Home</a>
+            <a href="aptitude.html" class="nav-link" onclick="closeMobileMenu()">Aptitude</a>
+            <a href="coding.html" class="nav-link" onclick="closeMobileMenu()">Coding</a>
+            <a href="interview.html" class="nav-link" onclick="closeMobileMenu()">Interview</a>
+            <a href="resume.html" class="nav-link" onclick="closeMobileMenu()">Resume AI</a>
+            <a href="dashboard.html" class="nav-link" onclick="closeMobileMenu()">Dashboard</a>
+            <a href="profile.html" class="nav-link" onclick="closeMobileMenu()">Profile</a>
+            <hr>
+            <div id="mobileUserInfo"></div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <section class="pt-32 pb-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h1 class="text-5xl font-bold mb-4" style="background: linear-gradient(135deg, #fff, rgba(255,255,255,0.9)); -webkit-background-clip: text; background-clip: text; color: transparent;">AI-Powered Interview Prep</h1>
+                <p class="text-xl text-white">Practice with our AI interviewer and get instant feedback</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2">
+                <!-- Interview Area -->
+                <div class="interview-card">
+                    <div class="ai-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-center mb-4">AI Interviewer</h3>
+                    
+                    <div id="questionArea" class="question-area mb-6">
+                        <div id="currentQuestion" class="text-lg text-gray-700">Click "Start Interview" to begin your practice session</div>
+                    </div>
+                    
+                    <div class="flex gap-4">
+                        <button id="startBtn" onclick="startInterview()" class="btn-gradient flex-1">
+                            <i class="fas fa-play mr-2"></i>Start Interview
+                        </button>
+                        <button id="recordBtn" onclick="recordAnswer()" class="btn-outline-gradient flex-1" disabled>
+                            <i class="fas fa-microphone mr-2"></i>Record Answer
+                        </button>
+                        <button id="nextBtn" onclick="nextQuestion()" class="btn-gradient flex-1 hidden">
+                            <i class="fas fa-forward mr-2"></i>Next Question
+                        </button>
+                    </div>
+                    
+                    <div id="recordingStatus" class="hidden mt-4 text-center">
+                        <div class="inline-flex items-center gap-2 text-red-500">
+                            <span class="recording-dot"></span>
+                            <span>Recording your answer...</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tips & Feedback -->
+                <div>
+                    <div class="interview-card mb-6">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                            Interview Tips
+                        </h3>
+                        <ul class="tips-list">
+                            <li><i class="fas fa-check-circle text-green-500 mt-0.5"></i><span>Speak clearly and confidently</span></li>
+                            <li><i class="fas fa-check-circle text-green-500 mt-0.5"></i><span>Use the STAR method for behavioral questions</span></li>
+                            <li><i class="fas fa-check-circle text-green-500 mt-0.5"></i><span>Provide specific examples from your experience</span></li>
+                            <li><i class="fas fa-check-circle text-green-500 mt-0.5"></i><span>Ask thoughtful questions at the end</span></li>
+                            <li><i class="fas fa-check-circle text-green-500 mt-0.5"></i><span>Practice active listening</span></li>
+                        </ul>
+                    </div>
+                    
+                    <div id="feedbackArea" class="hidden interview-card feedback-card">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-chart-line text-orange-600 mr-2"></i>
+                            AI Feedback
+                        </h3>
+                        <div id="feedbackContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer - Same as index -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>SmartPlace Pro</h3>
+                <p style="color: #9ca3af;">Empowering students to achieve their dream careers through AI-powered preparation.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#testimonials">Success Stories</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Features</h3>
+                <ul>
+                    <li><a href="aptitude.html">Aptitude Tests</a></li>
+                    <li><a href="coding.html">Coding Challenges</a></li>
+                    <li><a href="interview.html">AI Interviews</a></li>
+                    <li><a href="resume.html">Resume Analyzer</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SmartPlace Pro. All rights reserved. | Master Your Dream Job Placement</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Interview Questions
+        const interviewQuestions = [
+            {
+                question: "Tell me about yourself and why you're interested in this position.",
+                tips: "Focus on your professional background, key achievements, and why you're passionate about the role."
+            },
+            {
+                question: "What are your greatest strengths and how do they apply to this role?",
+                tips: "Choose 2-3 relevant strengths and provide specific examples of how you've used them."
+            },
+            {
+                question: "Describe a challenging situation you faced at work and how you handled it.",
+                tips: "Use the STAR method: Situation, Task, Action, Result."
+            },
+            {
+                question: "Where do you see yourself in 5 years?",
+                tips: "Show ambition but be realistic about career growth within the industry."
+            },
+            {
+                question: "Why should we hire you over other candidates?",
+                tips: "Highlight your unique combination of skills, experience, and enthusiasm."
+            },
+            {
+                question: "Tell me about a time you failed and what you learned from it.",
+                tips: "Be honest about the failure but focus on the lessons learned and how you improved."
+            }
+        ];
+        
+        let currentIndex = 0;
+        let responses = [];
+        let isRecording = false;
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let currentUser = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createAnimatedBackground();
+            loadUser();
+            
+            // Scroll effect for navbar
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) navbar.classList.add('scrolled');
+                else navbar.classList.remove('scrolled');
+            });
+        });
+        
+        function createAnimatedBackground() {
+            const bg = document.getElementById('animatedBg');
+            for (let i = 0; i < 50; i++) {
+                const span = document.createElement('span');
+                const size = Math.random() * 60 + 10;
+                span.style.width = size + 'px';
+                span.style.height = size + 'px';
+                span.style.left = Math.random() * 100 + '%';
+                span.style.animationDelay = Math.random() * 25 + 's';
+                span.style.animationDuration = Math.random() * 20 + 10 + 's';
+                bg.appendChild(span);
+            }
+        }
+        
+        function loadUser() {
+            const userStr = localStorage.getItem('user');
+            if (userStr) {
+                currentUser = JSON.parse(userStr);
+                const mobileUserInfo = document.getElementById('mobileUserInfo');
+                if (mobileUserInfo) {
+                    mobileUserInfo.innerHTML = `<span style="color: #667eea; font-weight: 600;">Welcome, ${currentUser.username}</span>
+                        <button onclick="logout()" class="btn-login" style="padding: 6px 16px; font-size: 14px; background: transparent; border: 2px solid #667eea; color: #667eea; border-radius: 50px; cursor: pointer;">Logout</button>`;
+                }
+            }
+        }
+        
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            if (mobileNav.style.display === 'none' || mobileNav.style.display === '') {
+                mobileNav.style.display = 'flex';
+            } else {
+                mobileNav.style.display = 'none';
+            }
+        }
+        
+        function closeMobileMenu() {
+            document.getElementById('mobileNav').style.display = 'none';
+        }
+        
+        function logout() {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+        
+        function startInterview() {
+            if (!currentUser) {
+                showToast('Please login to start the interview', 'error');
+                setTimeout(() => window.location.href = 'index.html', 1500);
+                return;
+            }
+            
+            currentIndex = 0;
+            responses = [];
+            document.getElementById('startBtn').classList.add('hidden');
+            document.getElementById('recordBtn').disabled = false;
+            document.getElementById('nextBtn').classList.remove('hidden');
+            document.getElementById('feedbackArea').classList.add('hidden');
+            loadQuestion();
+            showToast('Interview started! Click record to answer each question', 'success');
+        }
+        
+        function loadQuestion() {
+            const question = interviewQuestions[currentIndex];
+            const questionDiv = document.getElementById('currentQuestion');
+            questionDiv.innerHTML = `
+                <div class="font-semibold text-indigo-600 mb-2">Question ${currentIndex + 1} of ${interviewQuestions.length}</div>
+                <div class="text-gray-800 font-medium mb-3">${question.question}</div>
+                <div class="text-sm text-gray-500 bg-white p-3 rounded-xl">
+                    <i class="fas fa-lightbulb text-yellow-500 mr-1"></i>
+                    <strong>Tip:</strong> ${question.tips}
+                </div>
+            `;
+        }
+        
+        async function recordAnswer() {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                await startRecording();
+            }
+        }
+        
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+                
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    processAnswer(audioBlob);
+                    stream.getTracks().forEach(track => track.stop());
+                };
+                
+                mediaRecorder.start();
+                isRecording = true;
+                const recordBtn = document.getElementById('recordBtn');
+                recordBtn.innerHTML = '<i class="fas fa-stop mr-2"></i>Stop Recording';
+                recordBtn.classList.remove('btn-outline-gradient');
+                recordBtn.style.background = '#ef4444';
+                recordBtn.style.color = 'white';
+                recordBtn.style.border = 'none';
+                document.getElementById('recordingStatus').classList.remove('hidden');
+                showToast('Recording... Speak your answer clearly', 'info');
+            } catch (error) {
+                console.error('Microphone error:', error);
+                showToast('Please allow microphone access to record answers', 'error');
+            }
+        }
+        
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                const recordBtn = document.getElementById('recordBtn');
+                recordBtn.innerHTML = '<i class="fas fa-microphone mr-2"></i>Record Answer';
+                recordBtn.classList.add('btn-outline-gradient');
+                recordBtn.style.background = '';
+                recordBtn.style.color = '';
+                recordBtn.style.border = '';
+                document.getElementById('recordingStatus').classList.add('hidden');
+            }
+        }
+        
+        function processAnswer(audioBlob) {
+            showToast('Analyzing your answer...', 'info');
+            
+            // Simulate AI analysis
+            setTimeout(() => {
+                const score = Math.floor(Math.random() * 45) + 55;
+                const feedback = generateFeedback(score);
+                
+                responses.push({
+                    question: interviewQuestions[currentIndex].question,
+                    score: score,
+                    feedback: feedback
+                });
+                
+                showFeedback(feedback, score);
+                
+                // Save to localStorage
+                const interviewResponses = JSON.parse(localStorage.getItem('interviewResponses') || '[]');
+                interviewResponses.push({
+                    question: interviewQuestions[currentIndex].question,
+                    score: score,
+                    feedback: JSON.stringify(feedback),
+                    date: new Date().toISOString()
+                });
+                localStorage.setItem('interviewResponses', JSON.stringify(interviewResponses));
+                
+                showToast(`Analysis complete! Score: ${score}%`, 'success');
+            }, 2000);
+        }
+        
+        function generateFeedback(score) {
+            if (score >= 85) {
+                return {
+                    strengths: "Excellent clarity and confidence! Great use of specific examples with measurable outcomes.",
+                    improvements: "Continue practicing to maintain this level. Add more technical depth where relevant.",
+                    overall: "Outstanding performance! You're well prepared for real interviews."
+                };
+            } else if (score >= 70) {
+                return {
+                    strengths: "Good structure and relevant content. Your answers are well-organized.",
+                    improvements: "Add more specific metrics and quantifiable results to your examples. This makes your impact more tangible.",
+                    overall: "Good job! With a bit more practice, you'll be ready for top companies."
+                };
+            } else {
+                return {
+                    strengths: "You have the right foundational knowledge and enthusiasm.",
+                    improvements: "Work on structuring your answers using the STAR method. Add specific examples with numbers and results. Practice speaking with more confidence.",
+                    overall: "Room for improvement. Keep practicing with our AI interviewer to build confidence!"
+                };
+            }
+        }
+        
+        function showFeedback(feedback, score) {
+            const feedbackArea = document.getElementById('feedbackArea');
+            const feedbackContent = document.getElementById('feedbackContent');
+            
+            let scoreColor = score >= 70 ? '#10b981' : (score >= 60 ? '#f59e0b' : '#ef4444');
+            
+            feedbackContent.innerHTML = `
+                <div class="mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-semibold">Overall Score:</span>
+                        <span class="text-2xl font-bold" style="color: ${scoreColor}">${score}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 h-2 rounded-full" style="width: ${score}%"></div>
+                    </div>
+                </div>
+                <div class="mb-3 p-3 bg-white rounded-xl">
+                    <strong class="text-green-600"><i class="fas fa-check-circle mr-1"></i> Strengths:</strong>
+                    <p class="text-gray-700 mt-1">${feedback.strengths}</p>
+                </div>
+                <div class="mb-3 p-3 bg-white rounded-xl">
+                    <strong class="text-orange-600"><i class="fas fa-chart-line mr-1"></i> Areas for Improvement:</strong>
+                    <p class="text-gray-700 mt-1">${feedback.improvements}</p>
+                </div>
+                <div class="p-3 bg-white rounded-xl">
+                    <strong class="text-indigo-600"><i class="fas fa-star mr-1"></i> Overall Assessment:</strong>
+                    <p class="text-gray-700 mt-1">${feedback.overall}</p>
+                </div>
+            `;
+            
+            feedbackArea.classList.remove('hidden');
+        }
+        
+        function nextQuestion() {
+            if (currentIndex < interviewQuestions.length - 1) {
+                currentIndex++;
+                loadQuestion();
+                document.getElementById('feedbackArea').classList.add('hidden');
+                showToast('Next question ready! Click record to answer', 'info');
+            } else {
+                completeInterview();
+            }
+        }
+        
+        function completeInterview() {
+            const avgScore = responses.reduce((sum, r) => sum + r.score, 0) / responses.length;
+            const totalScore = Math.round(avgScore);
+            
+            showToast(`Interview completed! Average score: ${totalScore}%`, 'success');
+            
+            document.getElementById('startBtn').classList.remove('hidden');
+            document.getElementById('recordBtn').disabled = true;
+            document.getElementById('nextBtn').classList.add('hidden');
+            document.getElementById('currentQuestion').innerHTML = `
+                <div class="text-center">
+                    <i class="fas fa-check-circle text-green-500 text-5xl mb-3"></i>
+                    <p class="text-lg font-semibold text-gray-800">Interview Complete! 🎉</p>
+                    <p class="text-gray-600 mt-2">Questions answered: ${responses.length}/${interviewQuestions.length}</p>
+                    <p class="text-2xl font-bold text-indigo-600 mt-2">Average Score: ${totalScore}%</p>
+                    <button onclick="startInterview()" class="btn-gradient mt-4">
+                        <i class="fas fa-redo mr-2"></i>Practice Again
+                    </button>
+                </div>
+            `;
+        }
+        
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast-notification ${type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-green-500' : 'bg-blue-500'}`;
+            toast.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'} mr-2"></i>${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>

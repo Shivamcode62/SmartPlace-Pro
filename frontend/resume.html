@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer - SmartPlace Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .animated-bg span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            bottom: -50px;
+            animation: animate 25s linear infinite;
+        }
+        
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 28px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo span {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: #667eea;
+        }
+        
+        .nav-link.active {
+            color: #667eea;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #4a5568;
+        }
+        
+        /* Buttons */
+        .btn-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .btn-outline-gradient {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .btn-outline-gradient:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+        
+        /* Resume Card */
+        .resume-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .resume-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Drag & Drop Area */
+        .drag-drop-area {
+            border: 3px dashed #cbd5e1;
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            background: #f8fafc;
+            transition: all 0.3s;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .drag-drop-area.drag-over {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+            transform: scale(0.98);
+        }
+        
+        .drag-drop-area i {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .drag-drop-area h4 {
+            font-size: 18px;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        
+        .drag-drop-area p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .file-input-label {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .file-input-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .file-info {
+            margin-top: 15px;
+            padding: 10px;
+            background: #e0e7ff;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #4338ca;
+        }
+        
+        /* Score Circle */
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #667eea 0deg, #e2e8f0 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin: 0 auto 20px;
+        }
+        
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .score-inner span:first-child {
+            font-size: 32px;
+            font-weight: 800;
+            color: #667eea;
+        }
+        
+        .keyword-tag {
+            display: inline-block;
+            padding: 5px 12px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 13px;
+            color: #667eea;
+        }
+        
+        .keyword-tag.missing {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        
+        .suggestion-item {
+            padding: 12px;
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .toast-notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 1500;
+            animation: slideInRight 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        textarea {
+            resize: vertical;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 60px 20px 30px;
+            margin-top: 60px;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 40px;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .resume-card {
+                padding: 20px;
+            }
+            
+            .drag-drop-area {
+                padding: 30px 15px;
+            }
+        }
+        
+        .grid {
+            display: grid;
+            gap: 32px;
+        }
+        
+        .lg\:grid-cols-2 {
+            grid-template-columns: 1fr;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .flex {
+            display: flex;
+        }
+        
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .mb-12 {
+            margin-bottom: 48px;
+        }
+        
+        .mb-6 {
+            margin-bottom: 24px;
+        }
+        
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+        
+        .mt-4 {
+            margin-top: 16px;
+        }
+        
+        .mt-6 {
+            margin-top: 24px;
+        }
+        
+        .w-full {
+            width: 100%;
+        }
+        
+        .text-5xl {
+            font-size: 48px;
+        }
+        
+        .text-xl {
+            font-size: 20px;
+        }
+        
+        .text-2xl {
+            font-size: 24px;
+        }
+        
+        .font-bold {
+            font-weight: 700;
+        }
+        
+        .font-semibold {
+            font-weight: 600;
+        }
+        
+        .text-white {
+            color: white;
+        }
+        
+        .text-gray-800 {
+            color: #1f2937;
+        }
+        
+        .text-gray-600 {
+            color: #4b5563;
+        }
+        
+        .bg-blue-50 {
+            background-color: #eff6ff;
+        }
+        
+        .rounded-lg {
+            border-radius: 12px;
+        }
+        
+        .p-4 {
+            padding: 16px;
+        }
+        
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .pt-32 {
+            padding-top: 120px;
+        }
+        
+        .pb-20 {
+            padding-bottom: 80px;
+        }
+        
+        .px-4 {
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+        
+        .max-w-7xl {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg" id="animatedBg"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>SmartPlace Pro</span>
+            </div>
+            
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="aptitude.html" class="nav-link">Aptitude</a>
+                <a href="coding.html" class="nav-link">Coding</a>
+                <a href="interview.html" class="nav-link">Interview</a>
+                <a href="resume.html" class="nav-link active">Resume AI</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="profile.html" class="nav-link">Profile</a>
+            </div>
+            
+            <div class="mobile-menu" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileNav" style="display: none; background: white; padding: 20px; flex-direction: column; gap: 15px;">
+            <a href="index.html" class="nav-link" onclick="closeMobileMenu()">Home</a>
+            <a href="aptitude.html" class="nav-link" onclick="closeMobileMenu()">Aptitude</a>
+            <a href="coding.html" class="nav-link" onclick="closeMobileMenu()">Coding</a>
+            <a href="interview.html" class="nav-link" onclick="closeMobileMenu()">Interview</a>
+            <a href="resume.html" class="nav-link" onclick="closeMobileMenu()">Resume AI</a>
+            <a href="dashboard.html" class="nav-link" onclick="closeMobileMenu()">Dashboard</a>
+            <a href="profile.html" class="nav-link" onclick="closeMobileMenu()">Profile</a>
+            <hr>
+            <div id="mobileUserInfo"></div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <section class="pt-32 pb-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h1 class="text-5xl font-bold mb-4" style="background: linear-gradient(135deg, #fff, rgba(255,255,255,0.9)); -webkit-background-clip: text; background-clip: text; color: transparent;">AI Resume Analyzer</h1>
+                <p class="text-xl text-white">Upload your resume and get AI-powered ATS optimization</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2">
+                <!-- Upload Area with Drag & Drop -->
+                <div class="resume-card">
+                    <div class="text-center mb-6">
+                        <div class="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-file-alt text-4xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">Upload Your Resume</h3>
+                        <p class="text-gray-600 mt-2">Drag & drop or select a file (PDF, DOCX, TXT)</p>
+                    </div>
+                    
+                    <!-- Drag & Drop Area -->
+                    <div id="dragDropArea" class="drag-drop-area" onclick="document.getElementById('fileInput').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h4>Drag & Drop your resume here</h4>
+                        <p>or click to browse</p>
+                        <div class="file-input-label" onclick="event.stopPropagation(); document.getElementById('fileInput').click()">
+                            <i class="fas fa-folder-open mr-2"></i>Select File
+                        </div>
+                    </div>
+                    
+                    <input type="file" id="fileInput" accept=".txt,.pdf,.docx,.doc" onchange="handleFileSelect(event)">
+                    
+                    <div id="fileInfo" class="file-info" style="display: none;"></div>
+                    
+                    <!-- Or paste text manually -->
+                    <div style="margin-top: 20px;">
+                        <p class="text-gray-600 text-sm mb-2">Or paste your resume text directly:</p>
+                        <textarea id="resumeText" rows="6" placeholder="Paste your resume text here...&#10;&#10;Example:&#10;Software Engineer with 5+ years of experience in Python, JavaScript, and React. Led a team of 5 developers to deliver a cloud-based solution that increased efficiency by 30%."></textarea>
+                    </div>
+                    
+                    <button onclick="analyzeResume()" class="btn-gradient w-full mt-4">
+                        <i class="fas fa-chart-line mr-2"></i>Analyze Resume
+                    </button>
+                    
+                    <div class="mt-4 p-4 bg-blue-50 rounded-lg">
+                        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                        <span class="text-sm text-gray-600">Our AI analyzes your resume for ATS compatibility, keyword optimization, and provides actionable suggestions to improve your chances.</span>
+                    </div>
+                </div>
+                
+                <!-- Analysis Results -->
+                <div id="analysisArea" class="resume-card hidden">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Analysis Results</h3>
+                    
+                    <div class="text-center mb-6">
+                        <div class="score-circle" id="scoreCircle">
+                            <div class="score-inner">
+                                <span id="scoreValue">0</span>
+                                <span class="text-sm text-gray-500">ATS Score</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-800 mb-2">Keywords Found</h4>
+                        <div id="keywordsList" class="flex flex-wrap"></div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-800 mb-2">Missing Keywords</h4>
+                        <div id="missingKeywordsList" class="flex flex-wrap"></div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-2">AI Suggestions</h4>
+                        <div id="suggestionsList"></div>
+                    </div>
+                    
+                    <button onclick="downloadAnalysis()" class="btn-outline-gradient w-full mt-6">
+                        <i class="fas fa-download mr-2"></i>Download Analysis Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>SmartPlace Pro</h3>
+                <p style="color: #9ca3af;">Empowering students to achieve their dream careers through AI-powered preparation.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#testimonials">Success Stories</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Features</h3>
+                <ul>
+                    <li><a href="aptitude.html">Aptitude Tests</a></li>
+                    <li><a href="coding.html">Coding Challenges</a></li>
+                    <li><a href="interview.html">AI Interviews</a></li>
+                    <li><a href="resume.html">Resume Analyzer</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SmartPlace Pro. All rights reserved. | Master Your Dream Job Placement</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Industry keywords for ATS analysis
+        const industryKeywords = [
+            'python', 'javascript', 'react', 'node.js', 'sql', 'aws', 'azure', 'gcp',
+            'machine learning', 'artificial intelligence', 'data science', 'analytics',
+            'agile', 'scrum', 'leadership', 'team management', 'communication',
+            'problem solving', 'critical thinking', 'project management', 'git',
+            'docker', 'kubernetes', 'ci/cd', 'devops', 'rest api', 'graphql',
+            'html', 'css', 'typescript', 'angular', 'vue', 'django', 'flask',
+            'spring boot', 'java', 'c++', 'c#', 'php', 'ruby', 'swift', 'kotlin',
+            'excel', 'power bi', 'tableau', 'salesforce', 'seo', 'digital marketing'
+        ];
+        
+        let currentAnalysis = null;
+        let currentUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createAnimatedBackground();
+            setupDragAndDrop();
+            loadUser();
+            
+            // Scroll effect for navbar
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) navbar.classList.add('scrolled');
+                else navbar.classList.remove('scrolled');
+            });
+        });
+        
+        function createAnimatedBackground() {
+            const bg = document.getElementById('animatedBg');
+            for (let i = 0; i < 50; i++) {
+                const span = document.createElement('span');
+                const size = Math.random() * 60 + 10;
+                span.style.width = size + 'px';
+                span.style.height = size + 'px';
+                span.style.left = Math.random() * 100 + '%';
+                span.style.animationDelay = Math.random() * 25 + 's';
+                span.style.animationDuration = Math.random() * 20 + 10 + 's';
+                bg.appendChild(span);
+            }
+        }
+        
+        function setupDragAndDrop() {
+            const dropArea = document.getElementById('dragDropArea');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => {
+                    dropArea.classList.add('drag-over');
+                });
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => {
+                    dropArea.classList.remove('drag-over');
+                });
+            });
+            
+            dropArea.addEventListener('drop', handleDrop);
+        }
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        }
+        
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+        
+        function handleFile(file) {
+            const fileInfo = document.getElementById('fileInfo');
+            const validTypes = ['text/plain', 'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword'];
+            
+            if (!validTypes.includes(file.type) && !file.name.endsWith('.txt') && !file.name.endsWith('.pdf') && !file.name.endsWith('.docx') && !file.name.endsWith('.doc')) {
+                showToast('Please upload a valid file (TXT, PDF, DOC, DOCX)', 'error');
+                return;
+            }
+            
+            fileInfo.style.display = 'block';
+            fileInfo.innerHTML = `<i class="fas fa-file-alt mr-2"></i>Selected: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                document.getElementById('resumeText').value = content;
+                showToast('File loaded successfully! Click "Analyze Resume" to continue.', 'success');
+            };
+            reader.onerror = function() {
+                showToast('Error reading file', 'error');
+            };
+            reader.readAsText(file);
+        }
+        
+        function loadUser() {
+            if (currentUser) {
+                const mobileUserInfo = document.getElementById('mobileUserInfo');
+                if (mobileUserInfo) {
+                    mobileUserInfo.innerHTML = `<span style="color: #667eea; font-weight: 600;">Welcome, ${currentUser.username}</span>
+                        <button onclick="logout()" class="btn-login" style="padding: 6px 16px; font-size: 14px;">Logout</button>`;
+                }
+            }
+        }
+        
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            if (mobileNav.style.display === 'none' || mobileNav.style.display === '') {
+                mobileNav.style.display = 'flex';
+            } else {
+                mobileNav.style.display = 'none';
+            }
+        }
+        
+        function closeMobileMenu() {
+            document.getElementById('mobileNav').style.display = 'none';
+        }
+        
+        function logout() {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+        
+        function analyzeResume() {
+            const resumeText = document.getElementById('resumeText').value;
+            
+            if (!resumeText.trim()) {
+                showToast('Please paste your resume text or upload a file', 'error');
+                return;
+            }
+            
+            if (!currentUser) {
+                showToast('Please login to analyze resume', 'error');
+                setTimeout(() => window.location.href = 'index.html', 1500);
+                return;
+            }
+            
+            showToast('Analyzing your resume...', 'info');
+            
+            const textLower = resumeText.toLowerCase();
+            const foundKeywords = industryKeywords.filter(keyword => textLower.includes(keyword.toLowerCase()));
+            const missingKeywords = industryKeywords.filter(keyword => !textLower.includes(keyword.toLowerCase()));
+            
+            let atsScore = Math.min(100, Math.round((foundKeywords.length / industryKeywords.length) * 100 + 20));
+            if (resumeText.length < 500) atsScore = Math.max(30, atsScore - 15);
+            if (resumeText.split('\n').length > 30) atsScore = Math.min(100, atsScore + 10);
+            
+            const suggestions = [];
+            if (foundKeywords.length < 8) suggestions.push("🎯 Add more technical keywords relevant to your target role (e.g., Python, AWS, React)");
+            if (!textLower.includes('achieved') && !textLower.includes('improved') && !textLower.includes('increased')) {
+                suggestions.push("📊 Use action verbs and quantify achievements (e.g., 'Increased sales by 30%')");
+            }
+            if (resumeText.length < 400) suggestions.push("📝 Add more detail to your work experience and projects (current length is too short)");
+            if (!textLower.includes('certification') && !textLower.includes('certified')) {
+                suggestions.push("🏆 Include relevant certifications to strengthen your profile");
+            }
+            suggestions.push("✨ Ensure consistent formatting and remove any tables or graphics for better ATS parsing");
+            suggestions.push("🎯 Tailor your resume for each job application by matching keywords from the job description");
+            
+            currentAnalysis = {
+                text: resumeText,
+                score: atsScore,
+                foundKeywords: foundKeywords,
+                missingKeywords: missingKeywords.slice(0, 12),
+                suggestions: suggestions,
+                date: new Date().toISOString()
+            };
+            
+            displayAnalysis(currentAnalysis);
+            
+            const analyses = JSON.parse(localStorage.getItem('resumeAnalyses') || '[]');
+            analyses.push(currentAnalysis);
+            localStorage.setItem('resumeAnalyses', JSON.stringify(analyses));
+            
+            showToast(`Analysis complete! ATS Score: ${atsScore}%`, 'success');
+        }
+        
+        function displayAnalysis(analysis) {
+            document.getElementById('analysisArea').classList.remove('hidden');
+            
+            const degrees = (analysis.score / 100) * 360;
+            document.getElementById('scoreCircle').style.background = `conic-gradient(from 0deg, #667eea ${degrees}deg, #e2e8f0 ${degrees}deg)`;
+            document.getElementById('scoreValue').textContent = analysis.score;
+            
+            const keywordsList = document.getElementById('keywordsList');
+            keywordsList.innerHTML = analysis.foundKeywords.slice(0, 20).map(kw => 
+                `<span class="keyword-tag"><i class="fas fa-check-circle text-green-500 mr-1"></i>${kw}</span>`
+            ).join('');
+            
+            if (analysis.foundKeywords.length === 0) {
+                keywordsList.innerHTML = '<span class="text-gray-500">No keywords found</span>';
+            }
+            
+            const missingList = document.getElementById('missingKeywordsList');
+            missingList.innerHTML = analysis.missingKeywords.map(kw => 
+                `<span class="keyword-tag missing"><i class="fas fa-times-circle mr-1"></i>${kw}</span>`
+            ).join('');
+            
+            const suggestionsList = document.getElementById('suggestionsList');
+            suggestionsList.innerHTML = analysis.suggestions.map(suggestion => 
+                `<div class="suggestion-item"><i class="fas fa-lightbulb text-yellow-500 mr-2"></i>${suggestion}</div>`
+            ).join('');
+        }
+        
+        function downloadAnalysis() {
+            if (!currentAnalysis) return;
+            
+            const content = `SMARTPLACE PRO - RESUME ANALYSIS REPORT
+=========================================
+
+Date: ${new Date(currentAnalysis.date).toLocaleString()}
+ATS Score: ${currentAnalysis.score}%
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+KEYWORDS FOUND (${currentAnalysis.foundKeywords.length}):
+${currentAnalysis.foundKeywords.join(', ')}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MISSING KEYWORDS (${currentAnalysis.missingKeywords.length}):
+${currentAnalysis.missingKeywords.join(', ')}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AI SUGGESTIONS:
+${currentAnalysis.suggestions.map((s, i) => `${i + 1}. ${s}`).join('\n')}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Generated by SmartPlace Pro AI Resume Analyzer
+https://smartplacepro.com`;
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `resume_analysis_${Date.now()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast('Analysis report downloaded!', 'success');
+        }
+        
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast-notification ${type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-green-500' : 'bg-blue-500'}`;
+            toast.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'} mr-2"></i>${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>

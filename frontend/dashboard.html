@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SmartPlace Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .animated-bg span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            bottom: -50px;
+            animation: animate 25s linear infinite;
+        }
+        
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 28px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo span {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: #667eea;
+        }
+        
+        .nav-link.active {
+            color: #667eea;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn-login {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn-login:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .btn-register {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #4a5568;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .page-header h1 {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #667eea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+        }
+        
+        .page-header p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Stats Cards Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+        
+        .stat-icon i {
+            font-size: 28px;
+            color: white;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        /* Charts Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .chart-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .chart-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+        
+        /* Activity Section */
+        .activity-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .activity-section h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+        
+        .activity-item {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+            border-left: 4px solid #667eea;
+        }
+        
+        .activity-item:hover {
+            background: #f3f4f6;
+            transform: translateX(5px);
+        }
+        
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .activity-score {
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .activity-date {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 60px 20px 30px;
+            margin-top: 60px;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 40px;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+        
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 2000;
+            animation: slideInRight 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 968px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .page-header h1 {
+                font-size: 32px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-value {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg" id="animatedBg"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>SmartPlace Pro</span>
+            </div>
+            
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="aptitude.html" class="nav-link">Aptitude</a>
+                <a href="coding.html" class="nav-link">Coding</a>
+                <a href="interview.html" class="nav-link">Interview</a>
+                <a href="resume.html" class="nav-link">Resume AI</a>
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                <a href="profile.html" class="nav-link">Profile</a>
+            </div>
+            
+            <div class="nav-buttons" id="navButtons">
+                <a href="login.html" class="btn-login">Login</a>
+                <a href="register.html" class="btn-register">Register</a>
+            </div>
+            
+            <div class="mobile-menu" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileNav" style="display: none; background: white; padding: 20px; flex-direction: column; gap: 15px;">
+            <a href="index.html" class="nav-link" onclick="closeMobileMenu()">Home</a>
+            <a href="aptitude.html" class="nav-link" onclick="closeMobileMenu()">Aptitude</a>
+            <a href="coding.html" class="nav-link" onclick="closeMobileMenu()">Coding</a>
+            <a href="interview.html" class="nav-link" onclick="closeMobileMenu()">Interview</a>
+            <a href="resume.html" class="nav-link" onclick="closeMobileMenu()">Resume AI</a>
+            <a href="dashboard.html" class="nav-link active" onclick="closeMobileMenu()">Dashboard</a>
+            <a href="profile.html" class="nav-link" onclick="closeMobileMenu()">Profile</a>
+            <hr>
+            <a href="login.html" class="btn-login" style="text-align: center;">Login</a>
+            <a href="register.html" class="btn-register" style="text-align: center;">Register</a>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Your Performance Dashboard</h1>
+                <p>Track your progress, analyze performance, and achieve your goals</p>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="stat-value" id="totalTests">0</div>
+                    <div class="stat-label">Tests Completed</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="stat-value" id="totalChallenges">0</div>
+                    <div class="stat-label">Challenges Solved</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-value" id="avgScore">0%</div>
+                    <div class="stat-label">Average Score</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-value" id="bestScore">0%</div>
+                    <div class="stat-label">Best Performance</div>
+                </div>
+            </div>
+            
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-line mr-2"></i> Progress Overview</h3>
+                    <canvas id="progressChart" height="250"></canvas>
+                </div>
+                
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-pie mr-2"></i> Performance by Category</h3>
+                    <canvas id="categoryChart" height="250"></canvas>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="activity-section">
+                <h3><i class="fas fa-history mr-2"></i> Recent Activity</h3>
+                <div id="activityList">
+                    <p style="text-align: center; color: #9ca3af; padding: 40px;">No activities yet. Start practicing to see your progress!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>SmartPlace Pro</h3>
+                <p style="color: #9ca3af;">Empowering students to achieve their dream careers through AI-powered preparation.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="aptitude.html">Aptitude Tests</a></li>
+                    <li><a href="coding.html">Coding Challenges</a></li>
+                    <li><a href="interview.html">AI Interviews</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Features</h3>
+                <ul>
+                    <li><a href="aptitude.html">Aptitude Tests</a></li>
+                    <li><a href="coding.html">Coding Challenges</a></li>
+                    <li><a href="interview.html">AI Interviews</a></li>
+                    <li><a href="resume.html">Resume Analyzer</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SmartPlace Pro. All rights reserved. | Master Your Dream Job Placement</p>
+        </div>
+    </footer>
+    
+    <script>
+        let currentUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+        let authToken = localStorage.getItem('authToken');
+        let progressChart = null;
+        let categoryChart = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createAnimatedBackground();
+            loadUser();
+            loadDashboardData();
+        });
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        function createAnimatedBackground() {
+            const bg = document.getElementById('animatedBg');
+            for (let i = 0; i < 50; i++) {
+                const span = document.createElement('span');
+                const size = Math.random() * 60 + 10;
+                span.style.width = size + 'px';
+                span.style.height = size + 'px';
+                span.style.left = Math.random() * 100 + '%';
+                span.style.animationDelay = Math.random() * 25 + 's';
+                span.style.animationDuration = Math.random() * 20 + 10 + 's';
+                bg.appendChild(span);
+            }
+        }
+        
+        function loadUser() {
+            if (currentUser) {
+                const navButtons = document.getElementById('navButtons');
+                navButtons.innerHTML = `
+                    <span style="color: #667eea; font-weight: 600;">Welcome, ${currentUser.full_name || currentUser.username}</span>
+                    <button onclick="logout()" class="btn-login">Logout</button>
+                `;
+            } else {
+                // Redirect to home if not logged in
+                window.location.href = 'index.html';
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+        
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            if (mobileNav.style.display === 'none' || mobileNav.style.display === '') {
+                mobileNav.style.display = 'flex';
+            } else {
+                mobileNav.style.display = 'none';
+            }
+        }
+        
+        function closeMobileMenu() {
+            document.getElementById('mobileNav').style.display = 'none';
+        }
+        
+        function loadDashboardData() {
+            // Load data from localStorage
+            const testResults = JSON.parse(localStorage.getItem('testResults') || '[]');
+            const codeSubmissions = JSON.parse(localStorage.getItem('codeSubmissions') || '[]');
+            const interviewResponses = JSON.parse(localStorage.getItem('interviewResponses') || '[]');
+            const resumeAnalyses = JSON.parse(localStorage.getItem('resumeAnalyses') || '[]');
+            
+            // Update stats
+            const totalTests = testResults.length;
+            const totalChallenges = codeSubmissions.length;
+            const avgScore = testResults.length > 0 
+                ? Math.round(testResults.reduce((sum, t) => sum + t.score, 0) / testResults.length)
+                : 0;
+            const bestScore = testResults.length > 0
+                ? Math.max(...testResults.map(t => t.score))
+                : 0;
+            
+            document.getElementById('totalTests').textContent = totalTests;
+            document.getElementById('totalChallenges').textContent = totalChallenges;
+            document.getElementById('avgScore').textContent = `${avgScore}%`;
+            document.getElementById('bestScore').textContent = `${bestScore}%`;
+            
+            // Prepare chart data for progress
+            const last7Tests = testResults.slice(-7);
+            const chartLabels = last7Tests.length ? last7Tests.map((_, i) => `Test ${i + 1}`) : ['No Data'];
+            const chartScores = last7Tests.length ? last7Tests.map(t => t.score) : [0];
+            
+            // Progress Chart
+            if (progressChart) progressChart.destroy();
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            progressChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: 'Test Scores (%)',
+                        data: chartScores,
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#667eea',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Score: ${context.parsed.y}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Score (%)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Category Chart
+            const categoryData = {
+                'Aptitude': testResults.length,
+                'Coding': codeSubmissions.length,
+                'Interview': interviewResponses.length,
+                'Resume': resumeAnalyses.length
+            };
+            
+            if (categoryChart) categoryChart.destroy();
+            const ctx2 = document.getElementById('categoryChart').getContext('2d');
+            categoryChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(categoryData),
+                    datasets: [{
+                        data: Object.values(categoryData),
+                        backgroundColor: [
+                            '#667eea',
+                            '#10b981',
+                            '#f59e0b',
+                            '#ef4444'
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    return `${label}: ${value} attempts`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Load recent activity
+            const allActivities = [
+                ...testResults.map(t => ({ type: 'aptitude', title: t.test, score: t.score, date: t.date })),
+                ...codeSubmissions.map(c => ({ type: 'coding', title: c.challenge, status: c.status, date: c.date })),
+                ...interviewResponses.map(i => ({ type: 'interview', title: 'Interview Practice', score: i.score, date: i.date })),
+                ...resumeAnalyses.map(r => ({ type: 'resume', score: r.score, date: r.date }))
+            ];
+            
+            allActivities.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            const activityList = document.getElementById('activityList');
+            if (allActivities.length === 0) {
+                activityList.innerHTML = '<p style="text-align: center; color: #9ca3af; padding: 40px;"><i class="fas fa-inbox fa-2x mb-2 d-block"></i><br>No activities yet. Start practicing to see your progress!</p>';
+            } else {
+                activityList.innerHTML = allActivities.slice(0, 10).map(activity => {
+                    if (activity.type === 'aptitude') {
+                        return `
+                            <div class="activity-item">
+                                <div class="activity-header">
+                                    <span class="activity-title">
+                                        <i class="fas fa-brain" style="color: #667eea; margin-right: 8px;"></i>
+                                        ${activity.title}
+                                    </span>
+                                    <span class="activity-score">Score: ${activity.score}%</span>
+                                </div>
+                                <div class="activity-date">
+                                    <i class="far fa-calendar-alt mr-1"></i> ${new Date(activity.date).toLocaleString()}
+                                </div>
+                            </div>
+                        `;
+                    } else if (activity.type === 'coding') {
+                        return `
+                            <div class="activity-item">
+                                <div class="activity-header">
+                                    <span class="activity-title">
+                                        <i class="fas fa-code" style="color: #10b981; margin-right: 8px;"></i>
+                                        ${activity.title}
+                                    </span>
+                                    <span class="activity-score">${activity.status}</span>
+                                </div>
+                                <div class="activity-date">
+                                    <i class="far fa-calendar-alt mr-1"></i> ${new Date(activity.date).toLocaleString()}
+                                </div>
+                            </div>
+                        `;
+                    } else if (activity.type === 'interview') {
+                        return `
+                            <div class="activity-item">
+                                <div class="activity-header">
+                                    <span class="activity-title">
+                                        <i class="fas fa-comments" style="color: #f59e0b; margin-right: 8px;"></i>
+                                        ${activity.title}
+                                    </span>
+                                    <span class="activity-score">Score: ${activity.score}%</span>
+                                </div>
+                                <div class="activity-date">
+                                    <i class="far fa-calendar-alt mr-1"></i> ${new Date(activity.date).toLocaleString()}
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        return `
+                            <div class="activity-item">
+                                <div class="activity-header">
+                                    <span class="activity-title">
+                                        <i class="fas fa-file-alt" style="color: #ef4444; margin-right: 8px;"></i>
+                                        Resume Analysis
+                                    </span>
+                                    <span class="activity-score">ATS Score: ${activity.score}%</span>
+                                </div>
+                                <div class="activity-date">
+                                    <i class="far fa-calendar-alt mr-1"></i> ${new Date(activity.date).toLocaleString()}
+                                </div>
+                            </div>
+                        `;
+                    }
+                }).join('');
+            }
+            
+            // Fetch from backend if authenticated
+            if (authToken) {
+                fetchBackendData();
+            }
+        }
+        
+        async function fetchBackendData() {
+            try {
+                const response = await fetch('http://localhost:5000/api/dashboard/stats', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Backend stats:', data);
+                }
+            } catch (error) {
+                console.error('Error fetching backend data:', error);
+            }
+        }
+        
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            const bgColor = type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : '#3b82f6';
+            toast.style.background = bgColor;
+            toast.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'} mr-2"></i>${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>

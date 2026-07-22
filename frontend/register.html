@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - SmartPlace Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .animated-bg span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            bottom: -50px;
+            animation: animate 25s linear infinite;
+        }
+        
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Register Container */
+        .register-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .register-card {
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            max-width: 500px;
+            width: 100%;
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .register-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            text-align: center;
+            color: white;
+        }
+        
+        .register-header i {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .register-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .register-header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .register-body {
+            padding: 40px;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            top: 42px;
+            color: #a0aec0;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group input.error,
+        .form-group select.error {
+            border-color: #ef4444;
+        }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .success-message {
+            color: #10b981;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        /* Password Strength */
+        .password-strength {
+            margin-top: 8px;
+        }
+        
+        .strength-bar {
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s;
+        }
+        
+        .strength-text {
+            font-size: 11px;
+            color: #718096;
+        }
+        
+        /* Terms & Conditions */
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .terms input {
+            margin-top: 2px;
+            cursor: pointer;
+        }
+        
+        .terms label {
+            font-size: 13px;
+            color: #4a5568;
+            cursor: pointer;
+        }
+        
+        .terms a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        /* Buttons */
+        .btn-register {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-register:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        /* Login Link */
+        .login-link {
+            text-align: center;
+        }
+        
+        .login-link p {
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 2000;
+            animation: slideInRight 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .register-header {
+                padding: 30px;
+            }
+            
+            .register-body {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg" id="animatedBg"></div>
+    
+    <div class="register-container">
+        <div class="register-card">
+            <div class="register-header">
+                <i class="fas fa-user-graduate"></i>
+                <h1>Create Account</h1>
+                <p>Join SmartPlace Pro and ace your placements</p>
+            </div>
+            
+            <div class="register-body">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="fullName" placeholder="Enter your full name">
+                        <div class="error-message" id="fullNameError">Please enter your full name</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Username</label>
+                        <i class="fas fa-at"></i>
+                        <input type="text" id="username" placeholder="Choose a username">
+                        <div class="error-message" id="usernameError">Username must be at least 3 characters</div>
+                        <div class="success-message" id="usernameSuccess">Username available</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="Enter your email">
+                        <div class="error-message" id="emailError">Please enter a valid email</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Password</label>
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Create a password">
+                        <div class="error-message" id="passwordError">Password must be at least 6 characters</div>
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strengthFill"></div>
+                            </div>
+                            <div class="strength-text" id="strengthText"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <i class="fas fa-check-circle"></i>
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password">
+                        <div class="error-message" id="confirmError">Passwords do not match</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Year of Study</label>
+                        <i class="fas fa-graduation-cap"></i>
+                        <select id="year">
+                            <option value="">Select Year</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                            <option value="grad">Graduate</option>
+                        </select>
+                        <div class="error-message" id="yearError">Please select your year</div>
+                    </div>
+                    
+                    <div class="terms">
+                        <input type="checkbox" id="terms">
+                        <label>
+                            I agree to the <a href="#" onclick="showTerms()">Terms of Service</a> and 
+                            <a href="#" onclick="showPrivacy()">Privacy Policy</a>
+                        </label>
+                    </div>
+                    <div class="error-message" id="termsError">Please accept terms and conditions</div>
+                    
+                    <button type="submit" class="btn-register" id="registerBtn">
+                        <span id="btnText">Create Account</span>
+                        <span id="btnSpinner" class="spinner" style="display: none;"></span>
+                    </button>
+                </form>
+                
+                <div class="login-link">
+                    <p>Already have an account? <a href="login.html">Sign In</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // API Configuration
+        const API_BASE = 'http://localhost:5000/api';
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createAnimatedBackground();
+            setupValidation();
+            
+            // Form submission
+            document.getElementById('registerForm').addEventListener('submit', handleRegister);
+        });
+        
+        function createAnimatedBackground() {
+            const bg = document.getElementById('animatedBg');
+            for (let i = 0; i < 50; i++) {
+                const span = document.createElement('span');
+                const size = Math.random() * 60 + 10;
+                span.style.width = size + 'px';
+                span.style.height = size + 'px';
+                span.style.left = Math.random() * 100 + '%';
+                span.style.animationDelay = Math.random() * 25 + 's';
+                span.style.animationDuration = Math.random() * 20 + 10 + 's';
+                bg.appendChild(span);
+            }
+        }
+        
+        function setupValidation() {
+            // Real-time validation
+            document.getElementById('fullName').addEventListener('input', () => validateField('fullName'));
+            document.getElementById('username').addEventListener('input', () => {
+                validateField('username');
+                checkUsernameAvailability();
+            });
+            document.getElementById('email').addEventListener('input', () => validateField('email'));
+            document.getElementById('password').addEventListener('input', () => {
+                validateField('password');
+                checkPasswordStrength();
+                validateConfirmPassword();
+            });
+            document.getElementById('confirmPassword').addEventListener('input', validateConfirmPassword);
+            document.getElementById('year').addEventListener('change', () => validateField('year'));
+            document.getElementById('terms').addEventListener('change', () => validateField('terms'));
+        }
+        
+        function validateField(field) {
+            const value = document.getElementById(field).value;
+            const errorElement = document.getElementById(`${field}Error`);
+            
+            switch(field) {
+                case 'fullName':
+                    if (!value.trim()) {
+                        errorElement.classList.add('show');
+                        return false;
+                    }
+                    errorElement.classList.remove('show');
+                    return true;
+                    
+                case 'username':
+                    if (value.length < 3) {
+                        errorElement.classList.add('show');
+                        return false;
+                    }
+                    errorElement.classList.remove('show');
+                    return true;
+                    
+                case 'email':
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(value)) {
+                        errorElement.classList.add('show');
+                        return false;
+                    }
+                    errorElement.classList.remove('show');
+                    return true;
+                    
+                case 'password':
+                    if (value.length < 6) {
+                        errorElement.classList.add('show');
+                        return false;
+                    }
+                    errorElement.classList.remove('show');
+                    return true;
+                    
+                case 'year':
+                    if (!value) {
+                        errorElement.classList.add('show');
+                        return false;
+                    }
+                    errorElement.classList.remove('show');
+                    return true;
+                    
+                case 'terms':
+                    const termsChecked = document.getElementById('terms').checked;
+                    if (!termsChecked) {
+                        errorElement.classList.add('show');
+                        return false;
+                    }
+                    errorElement.classList.remove('show');
+                    return true;
+                    
+                default:
+                    return true;
+            }
+        }
+        
+        function validateConfirmPassword() {
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            const errorElement = document.getElementById('confirmError');
+            
+            if (password !== confirm) {
+                errorElement.classList.add('show');
+                return false;
+            }
+            errorElement.classList.remove('show');
+            return true;
+        }
+        
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthText = document.getElementById('strengthText');
+            
+            let strength = 0;
+            
+            if (password.length >= 6) strength++;
+            if (password.length >= 10) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+            
+            const percentage = (strength / 5) * 100;
+            strengthFill.style.width = percentage + '%';
+            
+            if (percentage < 20) {
+                strengthFill.style.background = '#ef4444';
+                strengthText.textContent = 'Weak password';
+            } else if (percentage < 60) {
+                strengthFill.style.background = '#f59e0b';
+                strengthText.textContent = 'Medium password';
+            } else {
+                strengthFill.style.background = '#10b981';
+                strengthText.textContent = 'Strong password';
+            }
+        }
+        
+        async function checkUsernameAvailability() {
+            const username = document.getElementById('username').value;
+            const successElement = document.getElementById('usernameSuccess');
+            
+            if (username.length >= 3) {
+                // Simulate API call
+                setTimeout(() => {
+                    if (username === 'admin' || username === 'test') {
+                        successElement.classList.remove('show');
+                    } else {
+                        successElement.classList.add('show');
+                    }
+                }, 500);
+            }
+        }
+        
+        function validateForm() {
+            const isValid = 
+                validateField('fullName') &&
+                validateField('username') &&
+                validateField('email') &&
+                validateField('password') &&
+                validateConfirmPassword() &&
+                validateField('year') &&
+                validateField('terms');
+            
+            return isValid;
+        }
+        
+        async function handleRegister(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                showToast('Please fill all fields correctly', 'error');
+                return;
+            }
+            
+            const fullName = document.getElementById('fullName').value;
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const year = document.getElementById('year').value;
+            
+            // Show loading state
+            const registerBtn = document.getElementById('registerBtn');
+            const btnText = document.getElementById('btnText');
+            const btnSpinner = document.getElementById('btnSpinner');
+            
+            registerBtn.disabled = true;
+            btnText.textContent = 'Creating account...';
+            btnSpinner.style.display = 'inline-block';
+            
+            try {
+                // Try backend registration
+                const response = await fetch(`${API_BASE}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        full_name: fullName,
+                        username: username,
+                        email: email,
+                        password: password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast('Registration successful! Redirecting to login...', 'success');
+                    
+                    // Store token and user data
+                    localStorage.setItem('authToken', data.access_token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    showToast(data.message || 'Registration failed', 'error');
+                }
+                
+            } catch (error) {
+                console.error('Registration error:', error);
+                
+                // Demo mode - store in localStorage
+                const demoUser = {
+                    id: Date.now(),
+                    username: username,
+                    full_name: fullName,
+                    email: email,
+                    year: year
+                };
+                
+                localStorage.setItem('user', JSON.stringify(demoUser));
+                localStorage.setItem('authToken', 'demo_token_' + Date.now());
+                
+                showToast('Demo registration successful! (Backend not running)', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            } finally {
+                registerBtn.disabled = false;
+                btnText.textContent = 'Create Account';
+                btnSpinner.style.display = 'none';
+            }
+        }
+        
+        function showTerms() {
+            showToast('Terms of Service will be displayed here', 'info');
+        }
+        
+        function showPrivacy() {
+            showToast('Privacy Policy will be displayed here', 'info');
+        }
+        
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast-notification ${type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-green-500' : 'bg-blue-500'}`;
+            toast.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'} mr-2"></i>${message}`;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

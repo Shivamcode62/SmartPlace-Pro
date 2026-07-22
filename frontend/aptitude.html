@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptitude Tests - SmartPlace Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .animated-bg span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            bottom: -50px;
+            animation: animate 25s linear infinite;
+        }
+        
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 28px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo span {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: #667eea;
+        }
+        
+        .nav-link.active {
+            color: #667eea;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn-login {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn-login:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .btn-register {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #4a5568;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .page-header h1 {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #667eea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+        }
+        
+        .page-header p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Test Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .test-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 35px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .test-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .test-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .test-icon i {
+            font-size: 36px;
+            color: white;
+        }
+        
+        .test-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .test-card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+        }
+        
+        .test-link {
+            color: white;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .test-card:hover .test-link {
+            gap: 12px;
+        }
+        
+        /* Question Container */
+        .question-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .test-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .timer-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .timer-inner {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .question-text {
+            font-size: 20px;
+            color: #1f2937;
+            margin-bottom: 30px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+        
+        .question-option {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #4b5563;
+            font-weight: 500;
+        }
+        
+        .question-option:hover {
+            background: #f3f4f6;
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+        
+        .question-option.selected {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-color: #667eea;
+            color: #667eea;
+        }
+        
+        .question-numbers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+        }
+        
+        .question-number {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #4b5563;
+            font-weight: 600;
+        }
+        
+        .question-number:hover {
+            background: #f3f4f6;
+            border-color: #667eea;
+        }
+        
+        .question-number.answered {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .question-number.current {
+            transform: scale(1.1);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+        
+        .btn-prev, .btn-next, .btn-submit {
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-prev {
+            background: #e5e7eb;
+            color: #4b5563;
+        }
+        
+        .btn-prev:hover {
+            background: #d1d5db;
+        }
+        
+        .btn-next {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-next:hover {
+            transform: translateX(5px);
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Results Container */
+        .results-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+        }
+        
+        .results-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+        }
+        
+        .results-icon i {
+            font-size: 50px;
+            color: white;
+        }
+        
+        .results-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+        
+        .results-score {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+        }
+        
+        .results-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 60px 20px 30px;
+            margin-top: 60px;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 40px;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 2000;
+            animation: slideInRight 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .page-header h1 {
+                font-size: 32px;
+            }
+            
+            .test-card {
+                padding: 25px;
+            }
+            
+            .question-container {
+                padding: 20px;
+            }
+            
+            .test-title {
+                font-size: 20px;
+            }
+            
+            .results-container {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg" id="animatedBg"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>SmartPlace Pro</span>
+            </div>
+            
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="aptitude.html" class="nav-link active">Aptitude</a>
+                <a href="coding.html" class="nav-link">Coding</a>
+                <a href="interview.html" class="nav-link">Interview</a>
+                <a href="resume.html" class="nav-link">Resume AI</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="profile.html" class="nav-link">Profile</a>
+            </div>
+            
+            <div class="nav-buttons" id="navButtons">
+                <a href="login.html" class="btn-login">Login</a>
+                <a href="register.html" class="btn-register">Register</a>
+            </div>
+            
+            <div class="mobile-menu" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileNav" style="display: none; background: white; padding: 20px; flex-direction: column; gap: 15px;">
+            <a href="index.html" class="nav-link" onclick="closeMobileMenu()">Home</a>
+            <a href="aptitude.html" class="nav-link active" onclick="closeMobileMenu()">Aptitude</a>
+            <a href="coding.html" class="nav-link" onclick="closeMobileMenu()">Coding</a>
+            <a href="interview.html" class="nav-link" onclick="closeMobileMenu()">Interview</a>
+            <a href="resume.html" class="nav-link" onclick="closeMobileMenu()">Resume AI</a>
+            <a href="dashboard.html" class="nav-link" onclick="closeMobileMenu()">Dashboard</a>
+            <a href="profile.html" class="nav-link" onclick="closeMobileMenu()">Profile</a>
+            <hr>
+            <a href="login.html" class="btn-login" style="text-align: center;">Login</a>
+            <a href="register.html" class="btn-register" style="text-align: center;">Register</a>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Smart Aptitude Tests</h1>
+                <p>Test your skills with adaptive questions and track your progress</p>
+            </div>
+            
+            <!-- Test Selection -->
+            <div id="testSelection">
+                <div class="grid">
+                    <div class="test-card" onclick="startTest('quant')">
+                        <div class="test-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h3>Quantitative Aptitude</h3>
+                        <p>25 questions | 30 minutes</p>
+                        <div class="test-link">
+                            Start Test <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="test-card" onclick="startTest('logical')">
+                        <div class="test-icon">
+                            <i class="fas fa-puzzle-piece"></i>
+                        </div>
+                        <h3>Logical Reasoning</h3>
+                        <p>20 questions | 25 minutes</p>
+                        <div class="test-link">
+                            Start Test <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="test-card" onclick="startTest('verbal')">
+                        <div class="test-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h3>Verbal Ability</h3>
+                        <p>20 questions | 25 minutes</p>
+                        <div class="test-link">
+                            Start Test <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Test Container -->
+            <div id="testContainer" class="hidden">
+                <div class="question-container">
+                    <div class="test-header">
+                        <h2 id="testTitle" class="test-title"></h2>
+                        <div class="timer-circle">
+                            <div class="timer-inner">
+                                <span id="timer">00:00</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="questionContainer"></div>
+                    
+                    <div class="nav-buttons">
+                        <button id="prevBtn" class="btn-prev hidden">Previous</button>
+                        <button id="nextBtn" class="btn-next">Next Question</button>
+                        <button id="submitBtn" class="btn-submit hidden">Submit Test</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Results Container -->
+            <div id="resultsContainer" class="hidden results-container">
+                <div class="results-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h2 class="results-title">Test Complete!</h2>
+                <div class="results-score">
+                    <span id="finalScore">0%</span>
+                </div>
+                <p id="scoreDetails" style="color: #6b7280; margin-bottom: 20px;"></p>
+                <div class="results-actions">
+                    <button onclick="resetTest()" class="btn-next">Take Another Test</button>
+                    <a href="dashboard.html" class="btn-prev">View Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>SmartPlace Pro</h3>
+                <p style="color: #9ca3af;">Empowering students to achieve their dream careers through AI-powered preparation.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="aptitude.html">Aptitude Tests</a></li>
+                    <li><a href="coding.html">Coding Challenges</a></li>
+                    <li><a href="interview.html">AI Interviews</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Features</h3>
+                <ul>
+                    <li><a href="aptitude.html">Aptitude Tests</a></li>
+                    <li><a href="coding.html">Coding Challenges</a></li>
+                    <li><a href="interview.html">AI Interviews</a></li>
+                    <li><a href="resume.html">Resume Analyzer</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SmartPlace Pro. All rights reserved. | Master Your Dream Job Placement</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Animated Background
+        function createAnimatedBackground() {
+            const bg = document.getElementById('animatedBg');
+            for (let i = 0; i < 50; i++) {
+                const span = document.createElement('span');
+                const size = Math.random() * 60 + 10;
+                span.style.width = size + 'px';
+                span.style.height = size + 'px';
+                span.style.left = Math.random() * 100 + '%';
+                span.style.animationDelay = Math.random() * 25 + 's';
+                span.style.animationDuration = Math.random() * 20 + 10 + 's';
+                bg.appendChild(span);
+            }
+        }
+        
+        // Test Data
+        const tests = {
+            quant: {
+                title: "Quantitative Aptitude Test",
+                time: 30 * 60,
+                questions: [
+                    { text: "If a train travels at 60 km/h, how far will it travel in 2.5 hours?", options: ["120 km", "150 km", "180 km", "200 km"], correct: 1 },
+                    { text: "What is 15% of 200?", options: ["20", "25", "30", "35"], correct: 2 },
+                    { text: "The average of 5 numbers is 12. What is the sum?", options: ["50", "60", "70", "80"], correct: 1 },
+                    { text: "If x + 5 = 12, what is x?", options: ["5", "6", "7", "8"], correct: 2 },
+                    { text: "What is the square root of 144?", options: ["10", "11", "12", "13"], correct: 2 },
+                    { text: "A shopkeeper sold an item for $120 with a profit of 20%. What was the cost price?", options: ["$100", "$110", "$115", "$125"], correct: 0 },
+                    { text: "What is 25% of 80?", options: ["15", "20", "25", "30"], correct: 1 },
+                    { text: "If 3x = 27, what is x?", options: ["6", "7", "8", "9"], correct: 3 },
+                    { text: "What is the area of a circle with radius 7 cm?", options: ["154 cm²", "144 cm²", "134 cm²", "124 cm²"], correct: 0 },
+                    { text: "A car travels 240 km in 4 hours. What is its speed?", options: ["50 km/h", "60 km/h", "70 km/h", "80 km/h"], correct: 1 }
+                ]
+            },
+            logical: {
+                title: "Logical Reasoning Test",
+                time: 25 * 60,
+                questions: [
+                    { text: "If all Bloops are Razzies and all Razzies are Lazzies, then all Bloops are definitely Lazzies. This is:", options: ["True", "False", "Uncertain", "None"], correct: 0 },
+                    { text: "Complete the series: 2, 4, 8, 16, ?", options: ["24", "32", "30", "28"], correct: 1 },
+                    { text: "Which word is different? Apple, Mango, Orange, Car", options: ["Apple", "Mango", "Orange", "Car"], correct: 3 },
+                    { text: "If 'CLOUD' is coded as 'FPRXG', then 'RAIN' is coded as?", options: ["UDLQ", "UDLR", "UELQ", "UELR"], correct: 0 },
+                    { text: "Find the odd one out: 3, 5, 7, 9, 11", options: ["3", "5", "7", "9"], correct: 3 }
+                ]
+            },
+            verbal: {
+                title: "Verbal Ability Test",
+                time: 25 * 60,
+                questions: [
+                    { text: "Choose the synonym of 'Benevolent':", options: ["Cruel", "Kind", "Angry", "Sad"], correct: 1 },
+                    { text: "Fill in the blank: She _____ to the store yesterday.", options: ["go", "goes", "went", "going"], correct: 2 },
+                    { text: "Choose the antonym of 'Difficult':", options: ["Hard", "Easy", "Complex", "Tough"], correct: 1 },
+                    { text: "Which word is correctly spelled?", options: ["Accommodate", "Acommodate", "Accommodate", "Acomodate"], correct: 0 },
+                    { text: "Choose the correct meaning of 'Eloquent':", options: ["Fluent", "Silent", "Rude", "Lazy"], correct: 0 }
+                ]
+            }
+        };
+        
+        let currentTest = null;
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let timer = null;
+        let timeLeft = 0;
+        let startTime = 0;
+        let currentUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+        let authToken = localStorage.getItem('authToken');
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createAnimatedBackground();
+            loadUser();
+            
+            if (!currentUser && !authToken) {
+                showToast('Please login to take tests', 'info');
+            }
+        });
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        function loadUser() {
+            if (currentUser) {
+                const navButtons = document.getElementById('navButtons');
+                navButtons.innerHTML = `
+                    <span style="color: #667eea; font-weight: 600;">Welcome, ${currentUser.full_name || currentUser.username}</span>
+                    <button onclick="logout()" class="btn-login">Logout</button>
+                `;
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+        
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            if (mobileNav.style.display === 'none' || mobileNav.style.display === '') {
+                mobileNav.style.display = 'flex';
+            } else {
+                mobileNav.style.display = 'none';
+            }
+        }
+        
+        function closeMobileMenu() {
+            document.getElementById('mobileNav').style.display = 'none';
+        }
+        
+        function startTest(testType) {
+            if (!currentUser && !authToken) {
+                showToast('Please login to take tests', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+                return;
+            }
+            
+            currentTest = tests[testType];
+            userAnswers = new Array(currentTest.questions.length).fill(-1);
+            currentQuestion = 0;
+            timeLeft = currentTest.time;
+            startTime = Date.now();
+            
+            document.getElementById('testSelection').classList.add('hidden');
+            document.getElementById('testContainer').classList.remove('hidden');
+            document.getElementById('testTitle').textContent = currentTest.title;
+            
+            startTimer();
+            loadQuestion();
+        }
+        
+        function startTimer() {
+            if (timer) clearInterval(timer);
+            timer = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    submitTest();
+                } else {
+                    timeLeft--;
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    document.getElementById('timer').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+        
+        function loadQuestion() {
+            const question = currentTest.questions[currentQuestion];
+            const container = document.getElementById('questionContainer');
+            
+            container.innerHTML = `
+                <div>
+                    <p style="color: #6b7280; margin-bottom: 15px;">Question ${currentQuestion + 1} of ${currentTest.questions.length}</p>
+                    <div class="question-text">${question.text}</div>
+                    <div>
+                        ${question.options.map((opt, idx) => `
+                            <div class="question-option ${userAnswers[currentQuestion] === idx ? 'selected' : ''}" 
+                                 onclick="selectAnswer(${idx})">
+                                <span style="font-weight: 600; margin-right: 10px;">${String.fromCharCode(65 + idx)}.</span> ${opt}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="question-numbers">
+                    ${currentTest.questions.map((_, idx) => `
+                        <div class="question-number ${userAnswers[idx] !== -1 ? 'answered' : ''} ${idx === currentQuestion ? 'current' : ''}"
+                             onclick="goToQuestion(${idx})">
+                            ${idx + 1}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (currentQuestion === 0) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+            
+            if (currentQuestion === currentTest.questions.length - 1) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+        }
+        
+        function selectAnswer(optionIndex) {
+            userAnswers[currentQuestion] = optionIndex;
+            loadQuestion();
+        }
+        
+        function goToQuestion(index) {
+            currentQuestion = index;
+            loadQuestion();
+        }
+        
+        function nextQuestion() {
+            if (currentQuestion < currentTest.questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            }
+        }
+        
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+        
+        async function submitTest() {
+            if (timer) clearInterval(timer);
+            
+            let correct = 0;
+            userAnswers.forEach((answer, idx) => {
+                if (answer === currentTest.questions[idx].correct) {
+                    correct++;
+                }
+            });
+            
+            const score = Math.round((correct / currentTest.questions.length) * 100);
+            const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+            
+            // Save to localStorage
+            const testResults = JSON.parse(localStorage.getItem('testResults') || '[]');
+            testResults.push({
+                test: currentTest.title,
+                score: score,
+                correct: correct,
+                total: currentTest.questions.length,
+                date: new Date().toISOString(),
+                timeTaken: timeTaken
+            });
+            localStorage.setItem('testResults', JSON.stringify(testResults));
+            
+            document.getElementById('testContainer').classList.add('hidden');
+            document.getElementById('resultsContainer').classList.remove('hidden');
+            document.getElementById('finalScore').textContent = `${score}%`;
+            document.getElementById('scoreDetails').textContent = `${correct} out of ${currentTest.questions.length} questions correct`;
+            
+            showToast(`Test completed! Score: ${score}%`, 'success');
+        }
+        
+        function resetTest() {
+            document.getElementById('resultsContainer').classList.add('hidden');
+            document.getElementById('testSelection').classList.remove('hidden');
+        }
+        
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            const bgColor = type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : '#3b82f6';
+            toast.style.background = bgColor;
+            toast.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'} mr-2"></i>${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        // Event listeners
+        document.getElementById('prevBtn')?.addEventListener('click', prevQuestion);
+        document.getElementById('nextBtn')?.addEventListener('click', nextQuestion);
+        document.getElementById('submitBtn')?.addEventListener('click', submitTest);
+    </script>
+</body>
+</html>

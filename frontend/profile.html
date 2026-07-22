@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - SmartPlace Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .animated-bg span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            bottom: -50px;
+            animation: animate 25s linear infinite;
+        }
+        
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 28px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo span {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: #667eea;
+        }
+        
+        .nav-link.active {
+            color: #667eea;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn-login {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-login:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .btn-register {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #4a5568;
+        }
+        
+        /* Profile specific styles */
+        .btn-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .btn-outline-gradient {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .btn-outline-gradient:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+        
+        .avatar i {
+            font-size: 60px;
+            color: white;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .info-value {
+            color: #1f2937;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: #6b7280;
+        }
+        
+        .tab:hover {
+            color: #667eea;
+        }
+        
+        .tab.active {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            margin-bottom: -2px;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-box i {
+            font-size: 30px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1f2937;
+        }
+        
+        .stat-label {
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .toast-notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 1500;
+            animation: slideInRight 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            animation: slideUp 0.3s;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 60px 20px 30px;
+            margin-top: 60px;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 40px;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .profile-card {
+                padding: 20px;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 1;
+                text-align: center;
+                padding: 10px;
+            }
+        }
+        
+        .bg-red-50 {
+            background-color: #fef2f2;
+        }
+        
+        .rounded-lg {
+            border-radius: 12px;
+        }
+        
+        .p-4 {
+            padding: 16px;
+        }
+        
+        .text-red-600 {
+            color: #dc2626;
+        }
+        
+        .text-sm {
+            font-size: 14px;
+        }
+        
+        .text-gray-600 {
+            color: #4b5563;
+        }
+        
+        .mb-2 {
+            margin-bottom: 8px;
+        }
+        
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+        
+        .my-6 {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .mt-6 {
+            margin-top: 24px;
+        }
+        
+        .gap-3 {
+            gap: 12px;
+        }
+        
+        .flex {
+            display: flex;
+        }
+        
+        .flex-1 {
+            flex: 1;
+        }
+        
+        .grid {
+            display: grid;
+        }
+        
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .gap-4 {
+            gap: 16px;
+        }
+        
+        .space-y-3 > * + * {
+            margin-top: 12px;
+        }
+        
+        .col-span-full {
+            grid-column: 1 / -1;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .py-8 {
+            padding-top: 32px;
+            padding-bottom: 32px;
+        }
+        
+        .bg-gradient-to-br {
+            background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+        }
+        
+        .rounded-xl {
+            border-radius: 16px;
+        }
+        
+        .text-3xl {
+            font-size: 30px;
+        }
+        
+        .text-indigo-500 {
+            color: #667eea;
+        }
+        
+        .text-xs {
+            font-size: 12px;
+        }
+        
+        .text-green-600 {
+            color: #10b981;
+        }
+        
+        .hover\:bg-gray-100:hover {
+            background-color: #f3f4f6;
+        }
+        
+        hr {
+            border: none;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        @media (min-width: 768px) {
+            .md\:grid-cols-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg" id="animatedBg"></div>
+    
+    <!-- Navigation - Same as index.html -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>SmartPlace Pro</span>
+            </div>
+            
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="aptitude.html" class="nav-link">Aptitude</a>
+                <a href="coding.html" class="nav-link">Coding</a>
+                <a href="interview.html" class="nav-link">Interview</a>
+                <a href="resume.html" class="nav-link">Resume AI</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="profile.html" class="nav-link active">Profile</a>
+            </div>
+            
+            <div class="mobile-menu" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileNav" style="display: none; background: white; padding: 20px; flex-direction: column; gap: 15px;">
+            <a href="index.html" class="nav-link" onclick="closeMobileMenu()">Home</a>
+            <a href="aptitude.html" class="nav-link" onclick="closeMobileMenu()">Aptitude</a>
+            <a href="coding.html" class="nav-link" onclick="closeMobileMenu()">Coding</a>
+            <a href="interview.html" class="nav-link" onclick="closeMobileMenu()">Interview</a>
+            <a href="resume.html" class="nav-link" onclick="closeMobileMenu()">Resume AI</a>
+            <a href="dashboard.html" class="nav-link" onclick="closeMobileMenu()">Dashboard</a>
+            <a href="profile.html" class="nav-link" onclick="closeMobileMenu()">Profile</a>
+            <hr>
+            <div id="mobileUserInfo" style="display: flex; gap: 10px; flex-direction: column;"></div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <section class="pt-32 pb-20 px-4" style="padding-top: 120px; padding-bottom: 60px;">
+        <div class="max-w-7xl mx-auto" style="max-width: 1200px; margin: 0 auto;">
+            <div class="text-center mb-12">
+                <h1 class="text-5xl font-bold mb-4" style="font-size: 48px; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #fff, rgba(255,255,255,0.9)); -webkit-background-clip: text; background-clip: text; color: transparent;">My Profile</h1>
+                <p class="text-xl text-white" style="font-size: 20px; color: white;">Manage your account and track your progress</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8" style="display: grid; grid-template-columns: 1fr; gap: 32px;">
+                <!-- Left Column - Profile Info -->
+                <div class="lg:col-span-1" style="grid-column: span 1;">
+                    <div class="profile-card">
+                        <div class="avatar" onclick="changeAvatar()">
+                            <i id="avatarIcon" class="fas fa-user-graduate"></i>
+                        </div>
+                        <h2 id="profileName" class="text-2xl font-bold text-center text-gray-800 mb-2" style="font-size: 24px; font-weight: 700; text-align: center; color: #1f2937; margin-bottom: 8px;">Loading...</h2>
+                        <p id="profileUsername" class="text-center text-gray-500 mb-4" style="text-align: center; color: #6b7280; margin-bottom: 16px;">@username</p>
+                        
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-envelope mr-2"></i>Email</span>
+                            <span id="profileEmail" class="info-value">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-calendar-alt mr-2"></i>Member Since</span>
+                            <span id="profileJoined" class="info-value">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-clock mr-2"></i>Last Active</span>
+                            <span id="profileLastActive" class="info-value">-</span>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <button onclick="editProfile()" class="btn-gradient w-full" style="width: 100%;">
+                                <i class="fas fa-edit mr-2"></i>Edit Profile
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Stats -->
+                    <div class="profile-card mt-6" style="margin-top: 24px;">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4" style="font-size: 18px; font-weight: 700; color: #1f2937; margin-bottom: 16px;">Quick Stats</h3>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <i class="fas fa-brain"></i>
+                                <div class="stat-value" id="statTests">0</div>
+                                <div class="stat-label">Tests Taken</div>
+                            </div>
+                            <div class="stat-box">
+                                <i class="fas fa-code"></i>
+                                <div class="stat-value" id="statCoding">0</div>
+                                <div class="stat-label">Challenges</div>
+                            </div>
+                            <div class="stat-box">
+                                <i class="fas fa-trophy"></i>
+                                <div class="stat-value" id="statBestScore">0%</div>
+                                <div class="stat-label">Best Score</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column - Tabs -->
+                <div class="lg:col-span-2" style="grid-column: span 2;">
+                    <div class="profile-card">
+                        <div class="tabs">
+                            <div class="tab active" onclick="switchTab('settings', this)">
+                                <i class="fas fa-cog mr-2"></i>Settings
+                            </div>
+                            <div class="tab" onclick="switchTab('security', this)">
+                                <i class="fas fa-shield-alt mr-2"></i>Security
+                            </div>
+                            <div class="tab" onclick="switchTab('achievements', this)">
+                                <i class="fas fa-medal mr-2"></i>Achievements
+                            </div>
+                            <div class="tab" onclick="switchTab('activity', this)">
+                                <i class="fas fa-history mr-2"></i>Activity
+                            </div>
+                        </div>
+                        
+                        <!-- Settings Tab -->
+                        <div id="settingsTab" class="tab-content active">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4" style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 16px;">Profile Settings</h3>
+                            <form id="profileForm">
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" id="fullName" placeholder="Enter your full name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" id="email" placeholder="Enter your email">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" id="phone" placeholder="Enter your phone number">
+                                </div>
+                                <div class="form-group">
+                                    <label>College/University</label>
+                                    <input type="text" id="college" placeholder="Enter your college name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Course/Department</label>
+                                    <input type="text" id="course" placeholder="Enter your course">
+                                </div>
+                                <div class="form-group">
+                                    <label>Year of Study</label>
+                                    <select id="year">
+                                        <option value="1">1st Year</option>
+                                        <option value="2">2nd Year</option>
+                                        <option value="3">3rd Year</option>
+                                        <option value="4">4th Year</option>
+                                        <option value="grad">Graduate</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Skills (comma separated)</label>
+                                    <textarea id="skills" rows="3" placeholder="Python, JavaScript, React, SQL, etc."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Bio</label>
+                                    <textarea id="bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                                </div>
+                                <button type="submit" class="btn-gradient">Save Changes</button>
+                            </form>
+                        </div>
+                        
+                        <!-- Security Tab -->
+                        <div id="securityTab" class="tab-content">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">Security Settings</h3>
+                            <form id="securityForm">
+                                <div class="form-group">
+                                    <label>Current Password</label>
+                                    <input type="password" id="currentPassword" placeholder="Enter current password">
+                                </div>
+                                <div class="form-group">
+                                    <label>New Password</label>
+                                    <input type="password" id="newPassword" placeholder="Enter new password">
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirm New Password</label>
+                                    <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                                </div>
+                                <button type="submit" class="btn-gradient">Change Password</button>
+                            </form>
+                            
+                            <hr class="my-6">
+                            
+                            <div class="bg-red-50 rounded-lg p-4">
+                                <h4 class="font-bold text-red-600 mb-2">Danger Zone</h4>
+                                <p class="text-sm text-gray-600 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+                                <button onclick="deleteAccount()" class="btn-danger">
+                                    <i class="fas fa-trash-alt mr-2"></i>Delete Account
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Achievements Tab -->
+                        <div id="achievementsTab" class="tab-content">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">Your Achievements</h3>
+                            <div id="achievementsList" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            </div>
+                        </div>
+                        
+                        <!-- Activity Tab -->
+                        <div id="activityTab" class="tab-content">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">Recent Activity</h3>
+                            <div id="activityList" class="space-y-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer - Same as index.html -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>SmartPlace Pro</h3>
+                <p style="color: #9ca3af;">Empowering students to achieve their dream careers through AI-powered preparation.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#testimonials">Success Stories</a></li>
+                    <li><a href="#stats">Stats</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Features</h3>
+                <ul>
+                    <li><a href="aptitude.html">Aptitude Tests</a></li>
+                    <li><a href="coding.html">Coding Challenges</a></li>
+                    <li><a href="interview.html">AI Interviews</a></li>
+                    <li><a href="resume.html">Resume Analyzer</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SmartPlace Pro. All rights reserved. | Master Your Dream Job Placement</p>
+        </div>
+    </footer>
+    
+    <!-- Edit Profile Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Edit Profile</h3>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="editFullName" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="editEmail" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="tel" id="editPhone" placeholder="Enter your phone">
+            </div>
+            <div class="flex gap-3 mt-4">
+                <button onclick="saveProfile()" class="btn-gradient flex-1">Save</button>
+                <button onclick="closeModal()" class="btn-outline-gradient flex-1">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Global variables and functions (same as original but with updated navbar compatibility)
+        let currentUser = null;
+        let userProfile = null;
+        
+        function createAnimatedBackground() {
+            const bg = document.getElementById('animatedBg');
+            if(!bg) return;
+            for (let i = 0; i < 50; i++) {
+                const span = document.createElement('span');
+                const size = Math.random() * 60 + 10;
+                span.style.width = size + 'px';
+                span.style.height = size + 'px';
+                span.style.left = Math.random() * 100 + '%';
+                span.style.animationDelay = Math.random() * 25 + 's';
+                span.style.animationDuration = Math.random() * 20 + 10 + 's';
+                bg.appendChild(span);
+            }
+        }
+        
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            if (mobileNav.style.display === 'none' || mobileNav.style.display === '') {
+                mobileNav.style.display = 'flex';
+            } else {
+                mobileNav.style.display = 'none';
+            }
+        }
+        
+        function closeMobileMenu() {
+            document.getElementById('mobileNav').style.display = 'none';
+        }
+        
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
+        });
+        
+        // Load user and profile data
+        function loadUser() {
+            const userStr = localStorage.getItem('user');
+            if (userStr) {
+                currentUser = JSON.parse(userStr);
+                document.getElementById('profileName').textContent = currentUser.full_name || currentUser.username;
+                document.getElementById('profileUsername').textContent = `@${currentUser.username}`;
+                loadProfileData();
+                loadStats();
+                loadAchievements();
+                loadActivity();
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+        
+        function loadProfileData() {
+            const savedProfile = localStorage.getItem('userProfile');
+            userProfile = savedProfile ? JSON.parse(savedProfile) : {
+                fullName: currentUser?.full_name || '',
+                email: currentUser?.email || '',
+                phone: '', college: '', course: '', year: '1', skills: [], bio: '', avatar: 'fa-user-graduate'
+            };
+            document.getElementById('profileEmail').textContent = userProfile.email || currentUser?.email || '-';
+            document.getElementById('profileJoined').textContent = new Date().toLocaleDateString();
+            document.getElementById('profileLastActive').textContent = new Date().toLocaleString();
+            document.getElementById('avatarIcon').className = `fas ${userProfile.avatar}`;
+            document.getElementById('fullName').value = userProfile.fullName || '';
+            document.getElementById('email').value = userProfile.email || '';
+            document.getElementById('phone').value = userProfile.phone || '';
+            document.getElementById('college').value = userProfile.college || '';
+            document.getElementById('course').value = userProfile.course || '';
+            document.getElementById('year').value = userProfile.year || '1';
+            document.getElementById('skills').value = Array.isArray(userProfile.skills) ? userProfile.skills.join(', ') : '';
+            document.getElementById('bio').value = userProfile.bio || '';
+        }
+        
+        function loadStats() {
+            const testResults = JSON.parse(localStorage.getItem('testResults') || '[]');
+            const codingSubmissions = JSON.parse(localStorage.getItem('codeSubmissions') || '[]');
+            document.getElementById('statTests').textContent = testResults.length;
+            document.getElementById('statCoding').textContent = codingSubmissions.length;
+            const bestScore = testResults.length ? Math.max(...testResults.map(t => t.score)) : 0;
+            document.getElementById('statBestScore').textContent = `${bestScore}%`;
+        }
+        
+        function loadAchievements() {
+            const testResults = JSON.parse(localStorage.getItem('testResults') || '[]');
+            const codingSubmissions = JSON.parse(localStorage.getItem('codeSubmissions') || '[]');
+            const interviewResponses = JSON.parse(localStorage.getItem('interviewResponses') || '[]');
+            const resumeAnalyses = JSON.parse(localStorage.getItem('resumeAnalyses') || '[]');
+            const achievementsList = document.getElementById('achievementsList');
+            const achievementsData = [
+                { name: "First Test", icon: "fa-brain", unlocked: testResults.length >= 1 },
+                { name: "Coding Ninja", icon: "fa-code", unlocked: codingSubmissions.length >= 5 },
+                { name: "Interview Master", icon: "fa-comments", unlocked: interviewResponses.length >= 3 },
+                { name: "Perfect Score", icon: "fa-trophy", unlocked: testResults.some(t => t.score >= 100) },
+                { name: "Resume Pro", icon: "fa-file-alt", unlocked: resumeAnalyses.length >= 1 },
+                { name: "DSA Expert", icon: "fa-database", unlocked: codingSubmissions.length >= 10 }
+            ];
+            const unlocked = achievementsData.filter(a => a.unlocked);
+            if (unlocked.length === 0) achievementsList.innerHTML = '<div class="col-span-full text-center text-gray-500 py-8">No achievements yet. Keep practicing!</div>';
+            else achievementsList.innerHTML = unlocked.map(ach => `
+                <div class="bg-gradient-to-br rounded-xl p-4 text-center">
+                    <i class="fas ${ach.icon} text-3xl text-indigo-500 mb-2"></i>
+                    <h4 class="font-bold text-gray-800">${ach.name}</h4>
+                    <div class="mt-2 text-green-600 text-sm"><i class="fas fa-check-circle"></i> Unlocked</div>
+                </div>
+            `).join('');
+        }
+        
+        function loadActivity() {
+            const all = [...(JSON.parse(localStorage.getItem('testResults') || '[]')).map(t=>({title:t.test, date:t.date, type:'aptitude'})),
+                         ...(JSON.parse(localStorage.getItem('codeSubmissions') || '[]')).map(c=>({title:c.challenge, date:c.date, type:'coding'}))];
+            all.sort((a,b)=>new Date(b.date)-new Date(a.date));
+            const container = document.getElementById('activityList');
+            if(!all.length) container.innerHTML = '<div class="text-center text-gray-500 py-8">No recent activity.</div>';
+            else container.innerHTML = all.slice(0,8).map(a=>`
+                <div class="bg-gray-50 rounded-lg p-4"><i class="fas ${a.type==='aptitude'?'fa-brain':'fa-code'} text-indigo-500 mr-2"></i>${a.title} - ${new Date(a.date).toLocaleDateString()}</div>
+            `).join('');
+        }
+        
+        function updateProfile() {
+            userProfile = {...userProfile, fullName: document.getElementById('fullName').value, email: document.getElementById('email').value, phone: document.getElementById('phone').value, college: document.getElementById('college').value, course: document.getElementById('course').value, year: document.getElementById('year').value, skills: document.getElementById('skills').value.split(',').map(s=>s.trim()), bio: document.getElementById('bio').value};
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+            if(currentUser) { currentUser.full_name = userProfile.fullName; currentUser.email = userProfile.email; localStorage.setItem('user', JSON.stringify(currentUser)); }
+            loadProfileData();
+            showToast('Profile updated!', 'success');
+        }
+        
+        function changePassword() {
+            const newPwd = document.getElementById('newPassword').value, confirm = document.getElementById('confirmPassword').value;
+            if(!newPwd || newPwd !== confirm) return showToast('Passwords do not match or empty', 'error');
+            showToast('Password changed (demo)', 'success');
+            document.getElementById('currentPassword').value = document.getElementById('newPassword').value = document.getElementById('confirmPassword').value = '';
+        }
+        
+        function editProfile() {
+            document.getElementById('editFullName').value = userProfile.fullName || '';
+            document.getElementById('editEmail').value = userProfile.email || '';
+            document.getElementById('editPhone').value = userProfile.phone || '';
+            document.getElementById('editModal').classList.add('active');
+        }
+        
+        function saveProfile() {
+            userProfile.fullName = document.getElementById('editFullName').value;
+            userProfile.email = document.getElementById('editEmail').value;
+            userProfile.phone = document.getElementById('editPhone').value;
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+            if(currentUser) { currentUser.full_name = userProfile.fullName; currentUser.email = userProfile.email; localStorage.setItem('user', JSON.stringify(currentUser)); }
+            loadProfileData();
+            closeModal();
+            showToast('Profile updated!', 'success');
+        }
+        
+        function changeAvatar() {
+            const avatars = ['fa-user-graduate','fa-user-astronaut','fa-user-ninja','fa-user-tie','fa-user-circle'];
+            let idx = avatars.indexOf(userProfile.avatar);
+            userProfile.avatar = avatars[(idx+1)%avatars.length];
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+            loadProfileData();
+            showToast('Avatar changed!', 'success');
+        }
+        
+        function deleteAccount() { if(confirm('Permanently delete account?')) { localStorage.clear(); showToast('Account deleted', 'info'); setTimeout(()=>window.location.href='index.html',1500); } }
+        function logout() { localStorage.removeItem('authToken'); localStorage.removeItem('user'); window.location.href='index.html'; }
+        function switchTab(tabName, el) {
+            document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+            if(el) el.classList.add('active');
+        }
+        function closeModal() { document.getElementById('editModal').classList.remove('active'); }
+        function showToast(msg, type) { const t = document.createElement('div'); t.className = `toast-notification ${type==='error'?'bg-red-500':type==='success'?'bg-green-500':'bg-blue-500'}`; t.innerHTML = `<i class="fas fa-${type==='error'?'exclamation-circle':'check-circle'} mr-2"></i>${msg}`; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            createAnimatedBackground();
+            loadUser();
+            document.getElementById('profileForm').addEventListener('submit', e=>{ e.preventDefault(); updateProfile(); });
+            document.getElementById('securityForm').addEventListener('submit', e=>{ e.preventDefault(); changePassword(); });
+        });
+        window.onclick = function(e) { if(e.target === document.getElementById('editModal')) closeModal(); };
+    </script>
+</body>
+</html>
